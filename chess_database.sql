@@ -9,7 +9,7 @@ CREATE TABLE User (
     password VARCHAR(30),
     firstname VARCHAR(30),
     lastname VARCHAR(30),
-    timestampe DATETIME,
+    timestamp DATETIME,
     elo INT,
     num_wins INT,
     num_losses INT,
