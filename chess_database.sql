@@ -1,4 +1,4 @@
--- comment out drop when necessary
+-- get rid of line 2 when necessary
 DROP DATABASE IF EXISTS chess;
 CREATE DATABASE chess;
 USE chess;
