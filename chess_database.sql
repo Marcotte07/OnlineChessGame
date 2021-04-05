@@ -5,8 +5,8 @@ USE chess;
 
 CREATE TABLE User (
 	user_id INT PRIMARY KEY,
-    username VARCHAR(30),
-    password VARCHAR(30),
+    username VARCHAR(30) NOT NULL UNIQUE,
+    password VARCHAR(30) NOT NULL,
     firstname VARCHAR(30),
     lastname VARCHAR(30),
     timestamp DATETIME,
