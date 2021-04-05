@@ -7,26 +7,26 @@ CREATE TABLE User (
 	user_id INT PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(30) NOT NULL,
-    firstname VARCHAR(30),
-    lastname VARCHAR(30),
-    timestamp DATETIME,
-    elo INT,
-    num_wins INT,
-    num_losses INT,
-    num_ties INT,
-    num_games INT
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    timestamp DATETIME NOT NULL,
+    elo INT NOT NULL,
+    num_wins INT NOT NULL,
+    num_losses INT NOT NULL,
+    num_ties INT NOT NULL,
+    num_games INT NOT NULL
 );
 
 CREATE TABLE Game (
 	game_id INT PRIMARY KEY,
-    white_player_id INT,
-    black_player_id INT,
+    white_player_id INT NOT NULL,
+    black_player_id INT NOT NULL,
     FOREIGN KEY (white_player_id) REFERENCES User(user_id),
     FOREIGN KEY (black_player_id) REFERENCES User(user_id),
     -- can pass only those 3 strings, any other string will give an error
-    game_status ENUM('win', 'loss', 'tie'),
-    start_time DATETIME,
-    end_time DATETIME,
-    white_player_elo INT,
-    black_player_elo INT
+    game_status ENUM('win', 'loss', 'tie') NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    white_player_elo INT NOT NULL,
+    black_player_elo INT NOT NULL
 );
