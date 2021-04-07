@@ -18,10 +18,11 @@ public class Query {
 	
 	Query(String ipAddress, int port) {
 		// TODO: gonna need the port and ipAddress for the aws thing
+		setNumAttempts(0);
 	}
 	
 	Query() {
-		numAttempts = 0;
+		setNumAttempts(0);
 	}
 	
 	public int getNumAttempts() {
@@ -106,7 +107,7 @@ public class Query {
 	}
 	
 	public static User searchUser(String username) 
-	throws SQLInvalidAuthorizationSpecException {
+			throws SQLInvalidAuthorizationSpecException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -142,8 +143,16 @@ public class Query {
 		}
 	}
 	
+	public static void createAccount(String email, String username, String password)
+	{
+		
+	}
+	
 	public static void main(String args[]) {
-		System.out.println("Sasoun is the coolest");
+		// le epic unit tests
+		
+		// authenticate
+		Query q = new Query();
 	}
 }
 
