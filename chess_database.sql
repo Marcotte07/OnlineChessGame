@@ -4,12 +4,12 @@ CREATE DATABASE chess;
 USE chess;
 
 CREATE TABLE User (
-	user_id INT PRIMARY KEY,
+	user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(30) NOT NULL,
     firstname VARCHAR(30) NOT NULL,
     lastname VARCHAR(30) NOT NULL,
-    timestamp DATETIME NOT NULL,
+    date_created DATETIME NOT NULL,
     elo INT NOT NULL,
     num_wins INT NOT NULL,
     num_losses INT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Game (
-	game_id INT PRIMARY KEY,
+	game_id INT PRIMARY KEY AUTO_INCREMENT,
     white_player_id INT NOT NULL,
     black_player_id INT NOT NULL,
     FOREIGN KEY (white_player_id) REFERENCES User(user_id),
