@@ -45,8 +45,7 @@ public class Query {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
-					+ "?user=root&password=root");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
 			ps = conn.prepareStatement("SELECT username, password FROM User "
 					+ "WHERE username=?");
 			ps.setString(1, username);
@@ -153,6 +152,13 @@ public class Query {
 		
 		// authenticate
 		Query q = new Query();
+		
+		try {
+			q.autheticate("saskool", "poop");
+			System.out.println("no exception");
+		} catch (SQLInvalidAuthorizationSpecException sqle) {
+			System.out.println("exception thrown");
+		}
 	}
 }
 
