@@ -15,7 +15,9 @@ Afterword, may have to ru if npm command not working:
 `sudo apt-get install npm` 
 
 Next in project chess directory run: 
-```npm install chess.js
+```
+npm install chess.js
 npm install rxjs
 npm install react-dnd-html5-backend
-npm i react-dnd@11.1.3```
+npm i react-dnd@11.1.3
+```
