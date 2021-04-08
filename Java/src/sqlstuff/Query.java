@@ -11,17 +11,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLInvalidAuthorizationSpecException;
 
-public class Query {
+// time stuff
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+/*
+ * 
+ * NOTE: once you call the Query class, you MUST call
+ * .close(), or else you WILL get a resource leak!
+ * 
+ * NOTE: once you call the Query class, you MUST call
+ * .close(), or else you WILL get a resource leak!
+ * 
+ * NOTE: once you call the Query class, you MUST call
+ * .close(), or else you WILL get a resource leak!
+ * 
+ * NOTE: once you call the Query class, you MUST call
+ * .close(), or else you WILL get a resource leak!
+ * 
+ * NOTE: once you call the Query class, you MUST call
+ * .close(), or else you WILL get a resource leak!
+ */
+public class Query {
 	private int numAttempts;
+	private Connection conn;
 	
+	public void close() throws SQLException {
+		if (conn != null)
+			conn.close();
+	}
 	
-	Query(String ipAddress, int port) {
-		// TODO: gonna need the port and ipAddress for the aws thing
+	Query(String ipAddress, int port) throws SQLException {
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
 		setNumAttempts(0);
 	}
 	
-	Query() {
+	Query() throws SQLException {
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
 		setNumAttempts(0);
 	}
 	
@@ -35,17 +61,12 @@ public class Query {
 		this.numAttempts = numAttempts;
 	}
 	
-	public static void sendEmail(String username) {
-		// TODO: how the hell do i send an email?
-	}
-	
+	// i am on the fence about declaring this as void.... should be boolean but im not sure
 	public void autheticate(String username, String password)
 	throws SQLInvalidAuthorizationSpecException {
-		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
 			ps = conn.prepareStatement("SELECT username, password FROM User "
 					+ "WHERE username=?");
 			ps.setString(1, username);
@@ -68,20 +89,16 @@ public class Query {
 			try {
 				if (rs != null) rs.close();
 				if (ps != null) ps.close();
-				if (conn != null) conn.close();
 			} catch (SQLException sqle2) {
 				sqle2.printStackTrace();
 			}
 		}
 	}
 	
-	public static Vector<User> getTopPlayers(int threshold) {
-		Connection conn = null;
+	public Vector<User> getTopPlayers(int threshold) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
-					+ "?user=root&password=root");
 			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo");
 			rs = ps.executeQuery();
 			Vector<User> topPlayers = new Vector<User>();
@@ -101,20 +118,16 @@ public class Query {
 			try {
 				if (rs != null) rs.close();
 				if (ps != null) ps.close();
-				if (conn != null) conn.close();
 			} catch (SQLException sqle2) {
 				sqle2.printStackTrace();
 			}
 		}
 	}
 	
-	public static User searchUser(String username) {
-		Connection conn = null;
+	public User searchUser(String username) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
-					+ "?user=root&password=root");
 			ps = conn.prepareStatement("SELECT * FROM User "
 					+ "WHERE username=?");
 			ps.setString(1, username);
@@ -135,23 +148,58 @@ public class Query {
 			try {
 				if (rs != null) rs.close();
 				if (ps != null) ps.close();
-				if (conn != null) conn.close();
 			} catch (SQLException sqle2) {
 				sqle2.printStackTrace();
 			}
 		}
 	}
 	
-	public static void createAccount(String email, String username, String password)
+	public void createAccount(
+			String username, String password, String firstname, String lastname)
 	{
-		
+		PreparedStatement ps = null;
+		try {
+			ps = conn.prepareStatement("INSERT INTO \n"
+					+ "user(username, password, firstname, lastname, date_created, elo, num_wins, num_losses,\n"
+					+ "num_ties, num_games) \n"
+					+ "VALUES\n"
+					+ "(?, ?, ?, ?, ?, 1000, 0, 0, 0, 0)");
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  
+		    Date date = new Date();  
+
+			ps.setString(1, username);
+			ps.setString(2, password);
+			ps.setString(3, firstname);
+			ps.setString(4, lastname);
+			ps.setString(5, formatter.format(date));
+			ps.executeUpdate();
+
+		} catch (SQLException sqle) {
+			// wtf do i do here? twiddle my thumbs? idk
+			sqle.printStackTrace();
+			//return null;
+		} finally {
+			try {
+				if (ps != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
 	}
 	
 	public static void main(String args[]) {
 		// le epic unit tests
 		
+		
+	
+		
 		// authenticate
-		Query q = new Query();
+		Query q = null;
+		try {  q = new Query(); }
+		catch (SQLException sqle) {
+			
+		} 
 		
 		try {
 			q.autheticate("saskool", "poop");
@@ -159,6 +207,9 @@ public class Query {
 		} catch (SQLInvalidAuthorizationSpecException sqle) {
 			System.out.println("exception thrown");
 		}
+		
+		// NOTE: if you run this line of code twice, you will get a runtime error because I made each 'username' unique!
+		q.createAccount("user", "pass", "first", "last");
 	}
 }
 
