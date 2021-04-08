@@ -108,8 +108,7 @@ public class Query {
 		}
 	}
 	
-	public static User searchUser(String username) 
-			throws SQLInvalidAuthorizationSpecException {
+	public static User searchUser(String username) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -123,13 +122,11 @@ public class Query {
 			
 			// check invalid username
 			if (!rs.next()) 
-				throw new SQLInvalidAuthorizationSpecException("invalid username");
+				return null;
 			
 			// TODO: pass the proper arguments to constructor
 			return new User();
 			
-		} catch(SQLInvalidAuthorizationSpecException iase) {
-			throw iase;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
