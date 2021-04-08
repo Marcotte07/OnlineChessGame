@@ -39,7 +39,7 @@ public class Query {
 		// TODO: how the hell do i send an email?
 	}
 	
-	public static void autheticate(String username, String password)
+	public void autheticate(String username, String password)
 	throws SQLInvalidAuthorizationSpecException {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -59,6 +59,7 @@ public class Query {
 				throw new SQLInvalidAuthorizationSpecException("invalid password");
 			
 		} catch(SQLInvalidAuthorizationSpecException iase) {
+			++numAttempts;
 			throw iase;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
