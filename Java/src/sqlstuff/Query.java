@@ -34,11 +34,7 @@ public class Query {
 			throw new IllegalArgumentException("Tried to set numAttempts to " + numAttempts);
 		this.numAttempts = numAttempts;
 	}
-	
-	public static void sendEmail(String username) {
-		// TODO: how the hell do i send an email?
-	}
-	
+		
 	public void autheticate(String username, String password)
 	throws SQLInvalidAuthorizationSpecException {
 		Connection conn = null;
@@ -158,7 +154,7 @@ public class Query {
 			q.autheticate("saskool", "poop");
 			System.out.println("no exception");
 		} catch (SQLInvalidAuthorizationSpecException sqle) {
-			System.out.println("exception thrown");
+			System.out.println("exception thrown: " + sqle);
 		}
 	}
 }
