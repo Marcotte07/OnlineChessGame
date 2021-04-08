@@ -1,10 +1,12 @@
 # OnlineChessGame
 
+### Links:
+
 Google Drive link:
 https://drive.google.com/drive/u/1/folders/0ABNxb_st-Dg3Uk9PVA
 
 
-### To Download Dependencies for Frontend:
+### Downloading Dependencies for Frontend:
 
 Install React (Create-React-App) through Node.js at link below:
 `https://nodejs.org/en/`
