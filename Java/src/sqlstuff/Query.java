@@ -85,13 +85,11 @@ public class Query {
 			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo");
 			rs = ps.executeQuery();
 			Vector<User> topPlayers = null;
-			int counter = 0;
 			while (rs.next()) {
-				if (counter >= threshold) 
+				if (topPlayers.size() >= threshold) 
 					break;
 				// TODO: properly pass arguments
 				topPlayers.add(new User());
-				++counter;
 			}
 			return topPlayers;
 			
