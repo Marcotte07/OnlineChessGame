@@ -80,8 +80,10 @@ public class Query {
 					+ "?user=root&password=root");
 			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo");
 			rs = ps.executeQuery();
-			Vector<User> topPlayers = null;
+			Vector<User> topPlayers = new Vector<User>();
 			while (rs.next()) {
+				if (topPlayers.size() >= threshold) 
+					break;
 				// TODO: properly pass arguments
 				topPlayers.add(new User());
 			}
@@ -102,8 +104,7 @@ public class Query {
 		}
 	}
 	
-	public static User searchUser(String username) 
-			throws SQLInvalidAuthorizationSpecException {
+	public static User searchUser(String username) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -117,13 +118,11 @@ public class Query {
 			
 			// check invalid username
 			if (!rs.next()) 
-				throw new SQLInvalidAuthorizationSpecException("invalid username");
+				return null;
 			
 			// TODO: pass the proper arguments to constructor
 			return new User();
 			
-		} catch(SQLInvalidAuthorizationSpecException iase) {
-			throw iase;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
