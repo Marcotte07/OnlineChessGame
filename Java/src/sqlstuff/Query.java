@@ -84,7 +84,7 @@ public class Query {
 					+ "?user=root&password=root");
 			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo");
 			rs = ps.executeQuery();
-			Vector<User> topPlayers = null;
+			Vector<User> topPlayers = new Vector<User>();
 			while (rs.next()) {
 				if (topPlayers.size() >= threshold) 
 					break;
