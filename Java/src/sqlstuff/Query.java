@@ -36,6 +36,7 @@ public class Query {
 	private int numAttempts;
 	private Connection conn;
 	
+	// DO NOT FORGE TO CALL .CLOSE()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public void close() throws SQLException {
 		if (conn != null)
 			conn.close();
@@ -208,8 +209,12 @@ public class Query {
 			System.out.println("exception thrown");
 		}
 		
+		// need to test q.getTopPlayers
+		Vector<User> v = q.getTopPlayers(3);
+		System.out.println();
+		
 		// NOTE: if you run this line of code twice, you will get a runtime error because I made each 'username' unique!
-		q.createAccount("user", "pass", "first", "last");
+		// q.createAccount("user", "pass", "first", "last");
 	}
 }
 
