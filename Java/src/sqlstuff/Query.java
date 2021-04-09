@@ -1,7 +1,6 @@
 package sqlstuff;
 
 import java.util.Vector;
-import java.lang.IllegalArgumentException;
 
 // sql classes that i need
 import java.sql.Connection;
@@ -13,6 +12,7 @@ import java.sql.SQLInvalidAuthorizationSpecException;
 
 // time stuff
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
 /*
@@ -33,7 +33,6 @@ import java.util.Date;
  * .close(), or else you WILL get a resource leak!
  */
 public class Query {
-	private int numAttempts;
 	private Connection conn;
 	
 	// DO NOT FORGE TO CALL .CLOSE()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -43,23 +42,13 @@ public class Query {
 	}
 	
 	Query(String ipAddress, int port) throws SQLException {
-		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
-		setNumAttempts(0);
+		conn = DriverManager.getConnection("jdbc:mysql://" + ipAddress + ":"+ port 
+				+ "3306/chess?user=root&password=root");
 	}
 	
 	Query() throws SQLException {
-		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess?user=root&password=root");
-		setNumAttempts(0);
-	}
-	
-	public int getNumAttempts() {
-		return numAttempts;
-	}
-	
-	public void setNumAttempts(int numAttempts) {
-		if (numAttempts < 0)
-			throw new IllegalArgumentException("Tried to set numAttempts to " + numAttempts);
-		this.numAttempts = numAttempts;
+		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
+				+ "?user=root&password=root");
 	}
 	
 	// i am on the fence about declaring this as void.... should be boolean but im not sure
@@ -80,9 +69,6 @@ public class Query {
 			if (!rs.getString("password").equals(password)) 
 				throw new SQLInvalidAuthorizationSpecException("invalid password");
 			
-		} catch(SQLInvalidAuthorizationSpecException iase) {
-			++numAttempts;
-			throw iase;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
@@ -100,19 +86,35 @@ public class Query {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo");
+			ps = conn.prepareStatement("SELECT * FROM User ORDER BY elo DESC");
 			rs = ps.executeQuery();
 			Vector<User> topPlayers = new Vector<User>();
 			while (rs.next()) {
 				if (topPlayers.size() >= threshold) 
 					break;
-				// TODO: properly pass arguments
-				topPlayers.add(new User());
+			
+				topPlayers.add(
+						new User(
+								rs.getInt("user_id"),
+								rs.getString("username"),
+								rs.getString("password"),
+								rs.getString("firstname"),
+								rs.getString("lastname"),
+								rs.getString("date_created"),
+								
+								rs.getInt("elo"),
+								rs.getInt("num_wins"),
+								rs.getInt("num_losses"),
+								rs.getInt("num_ties"),
+								rs.getInt("num_games")
+								)
+						);
 			}
 			return topPlayers;
-			
+		} catch (ParseException pe) {
+			pe.printStackTrace();
+			return null;
 		} catch (SQLException sqle) {
-			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
 			return null;
 		} finally {
@@ -138,9 +140,23 @@ public class Query {
 			if (!rs.next()) 
 				return null;
 			
-			// TODO: pass the proper arguments to constructor
-			return new User();
-			
+			return new User(
+					rs.getInt("user_id"),
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getString("firstname"),
+					rs.getString("lastname"),
+					rs.getString("date_created"),
+					
+					rs.getInt("elo"),
+					rs.getInt("num_wins"),
+					rs.getInt("num_losses"),
+					rs.getInt("num_ties"),
+					rs.getInt("num_games")
+					);
+		} catch(ParseException pe) {
+			pe.printStackTrace();
+			return null;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
@@ -166,14 +182,11 @@ public class Query {
 					+ "VALUES\n"
 					+ "(?, ?, ?, ?, ?, 1000, 0, 0, 0, 0)");
 			
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  
-		    Date date = new Date();  
-
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.setString(3, firstname);
 			ps.setString(4, lastname);
-			ps.setString(5, formatter.format(date));
+			ps.setString(5, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			ps.executeUpdate();
 
 		} catch (SQLException sqle) {
@@ -192,9 +205,6 @@ public class Query {
 	public static void main(String args[]) {
 		// le epic unit tests
 		
-		
-	
-		
 		// authenticate
 		Query q = null;
 		try {  q = new Query(); }
@@ -209,9 +219,11 @@ public class Query {
 			System.out.println("exception thrown");
 		}
 		
-		// need to test q.getTopPlayers
-		Vector<User> v = q.getTopPlayers(3);
-		System.out.println();
+		// getTopPlayers works!
+		Vector<User> v = q.getTopPlayers(100);
+		for (int i = 0; i < v.size(); ++i) {
+			System.out.println(v.get(i).elo);
+		}
 		
 		// NOTE: if you run this line of code twice, you will get a runtime error because I made each 'username' unique!
 		// q.createAccount("user", "pass", "first", "last");
