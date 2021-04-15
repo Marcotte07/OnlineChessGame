@@ -213,12 +213,7 @@ public class Query {
 			
 		} 
 		
-		try {
-			q.autheticate("saskool", "poop");
-			System.out.println("no exception");
-		} catch (SQLInvalidAuthorizationSpecException sqle) {
-			System.out.println("exception thrown");
-		}
+		
 		
 		// getTopPlayers works!
 		Vector<User> v = q.getTopPlayers(100);
