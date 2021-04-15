@@ -52,8 +52,7 @@ public class Query {
 	}
 	
 	// i am on the fence about declaring this as void.... should be boolean but im not sure
-	public void autheticate(String username, String password)
-	throws SQLInvalidAuthorizationSpecException {
+	public boolean autheticate(String username, String password) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -64,14 +63,16 @@ public class Query {
 			
 			// check invalid username
 			if (!rs.next()) 
-				throw new SQLInvalidAuthorizationSpecException("invalid username");
+				return false;
 			// check invalid password
 			if (!rs.getString("password").equals(password)) 
-				throw new SQLInvalidAuthorizationSpecException("invalid password");
+				return false;
 			
+			return true;
 		} catch (SQLException sqle) {
 			// wtf do i do here? twiddle my thumbs? idk
 			sqle.printStackTrace();
+			return false;
 		} finally {
 			try {
 				if (rs != null) rs.close();
