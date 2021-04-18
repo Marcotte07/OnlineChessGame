@@ -213,8 +213,6 @@ public class Query {
 			
 		} 
 		
-		
-		
 		// getTopPlayers works!
 		Vector<User> v = q.getTopPlayers(100);
 		for (int i = 0; i < v.size(); ++i) {
