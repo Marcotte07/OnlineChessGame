@@ -1,4 +1,3 @@
-package sqlstuff;
 
 import java.util.Vector;
 
@@ -41,12 +40,14 @@ public class Query {
 			conn.close();
 	}
 	
-	Query(String ipAddress, int port) throws SQLException {
+	Query(String ipAddress, int port) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn = DriverManager.getConnection("jdbc:mysql://" + ipAddress + ":"+ port 
 				+ "3306/chess?user=root&password=root");
 	}
 	
-	Query() throws SQLException {
+	Query() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
 				+ "?user=root&password=root");
 	}
@@ -127,6 +128,27 @@ public class Query {
 			}
 		}
 	}
+	
+	
+	public Vector<Game> getPlayerGames(String username) {
+		
+			Vector<Game> games = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			
+			User player = searchUser(username);
+			int id = player.id;
+			try {
+				//TODO: Finish get player games function
+				String query = "SELECT * FROM chess.game a WHERE white_player_id=1 or black_player_id=1";
+				ps = conn.prepareStatement("SELECT * FROM User WHERE username=?");
+			} catch (SQLException sqle) {
+				System.out.println("SQLE: " + sqle);
+			}
+			
+			return null; //TODO this is not done
+	}
+	
 	
 	public User searchUser(String username) {
 		PreparedStatement ps = null;
@@ -211,7 +233,9 @@ public class Query {
 		try {  q = new Query(); }
 		catch (SQLException sqle) {
 			
-		} 
+		} catch (ClassNotFoundException cnfe){
+			
+		}
 		
 		// getTopPlayers works!
 		Vector<User> v = q.getTopPlayers(100);
