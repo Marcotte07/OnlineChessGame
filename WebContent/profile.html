@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Chess</title>
+	<script>
+		function getProfileData() {
+			var xmlHttp = new XMLHttpRequest();
+	    	xmlHttp.open("GET", "UserProfile?name=" + findGetParameter("name"), true );
+		    xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		    xmlHttp.onreadystatechange = function() {
+		    	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		    		if (xmlHttp.responseText) {
+		    			if(this.responseText == "none") {
+		    				document.getElementById('content').innerHTML = "Either no player profile has been specified, or the one provided does not exist in the system.";
+		    			}else {
+		    				document.getElementById('content').innerHTML = this.responseText;
+		    			}
+				    	
+		    		}
+		    	}
+		    }
+		    xmlHttp.send();
+		}	
+		
+		
+		function findGetParameter(parameterName) {
+		    var result = null,
+		        tmp = [];
+		    location.search
+		        .substr(1)
+		        .split("&")
+		        .forEach(function (item) {
+		          tmp = item.split("=");
+		          if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+		        });
+		    return result;
+		}
+		
+		
+		function test() {
+			document.getElementById('name').innerHTML = "<h2>" + findGetParameter("name") + "<h2>";
+		}
+	
+	</script>
+</head>
+<body>
+
+	<div id="name"></div>
+	<div id="content"></div>
+	<script>test()</script>
+	<script>getProfileData()</script>
+	
+
+</body>
+</html>

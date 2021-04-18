@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Chess</title>
+	<script>
+		function getLeaderboards() {
+			var xmlHttp = new XMLHttpRequest();
+	    	xmlHttp.open("GET", "Leaderboards", true );
+		    xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		    xmlHttp.onreadystatechange = function() {
+		    	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		    		if (xmlHttp.responseText) {
+				    	document.getElementById('content').innerHTML = this.responseText;
+		    		}
+		    	}
+		    }
+		    xmlHttp.send();
+		}	
+	
+	</script>
+</head>
+<body>
+	<script>getLeaderboards()</script>
+	<div id="content"></div>
+
+</body>
+</html>
