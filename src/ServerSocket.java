@@ -1,5 +1,3 @@
-package ugh;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Vector;
@@ -14,7 +12,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint(value = "/ws")
+@ServerEndpoint(value = "/cheese")
 public class ServerSocket {
 
 	//private static Vector<Session> sessionVector = new Vector<Session>();
@@ -44,9 +42,9 @@ public class ServerSocket {
 	}
 	
 	@OnMessage
-	public void onMessage(String message, Session session) {
+	public void onMessage(String message, Session session) throws IOException {
 		// send the opponent a json file of the move
-		opponentSession.get(session).getAsyncRemote().sendText(message);
+		opponentSession.get(session).getBasicRemote().sendText(message);
 		// will leave this for debugging purposes
 		System.out.println(message);
 	}
