@@ -22,10 +22,11 @@ public class ServerSocket {
 	
 	// decided to make this synchronized because p much the entire function is critical section
 	@OnOpen
-	public synchronized void open(Session session) {
+	public void open(Session session) {
 		System.out.println("Connection made!");
 	//	sessionVector.add(session);
 		// if another player is waiting in the queue, start a game
+		
 		if (sessionQueue.size() > 0) {
 			Session opponent = sessionQueue.remove();
 			opponentSession.put(session, opponent);
