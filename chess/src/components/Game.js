@@ -37,6 +37,8 @@ export function handleMove(from, to) {
     }
 }
 
+var ws = new WebSocket("ws://localhost:8088/UGH/ws");
+// change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
 export function move(from, to, promotion) {
     let tempMove = {from, to}
     if(promotion) {
@@ -46,8 +48,43 @@ export function move(from, to, promotion) {
     if(legalMove) {
         updateGame();
     }
-    
     // Now block here for opponents move to come back
+    ws.onopen = function(event) {
+        // todo: add something here possibly?
+		//document.getElementById("mychat").innerHTML += "Connected!<br />";
+    }
+    ws.onmessage = function(event) {
+       // document.getElementById("mychat").innerHTML += event.data + "<br />";
+    }
+    ws.onclose = function(event) {
+       // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
+    }
+
+    // had to include these two functions because having a Connecting error... it's hella annoying
+    // https://stackoverflow.com/questions/23051416/uncaught-invalidstateerror-failed-to-execute-send-on-websocket-still-in-co
+
+
+    var send = function (message, callback) {
+        waitForConnection(function () {
+            ws.send(message);
+            if (typeof callback !== 'undefined') {
+              callback();
+            }
+        }, 1000);
+    };
+    
+    var waitForConnection = function (callback, interval) {
+        if (ws.readyState === 1) {
+            callback();
+        } else {
+            // optional: implement backoff for interval here
+            setTimeout(function () {
+                waitForConnection(callback, interval);
+            }, interval);
+        }
+    };
+    send("check", function(){});
+ //   send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
 }
 
 function updateGame(pendingPromotion) {
