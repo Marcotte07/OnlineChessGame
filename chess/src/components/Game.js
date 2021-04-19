@@ -68,9 +68,7 @@ export function move(from, to, promotion) {
 
 
     
-    ws.send("please help me i am suffering greatly")
-    //send("check", function(){});
- //   send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
+    ws.send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
 }
 
 function updateGame(pendingPromotion) {
