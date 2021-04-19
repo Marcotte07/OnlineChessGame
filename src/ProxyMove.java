@@ -6,6 +6,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
+
+/*
+NOTEE: I THOUGHT ABOUT THIS AND REALIZED WHAT NICK SAID WAS RIGHT, WE NEED TO USE WEB SOCKETS FOR
+COMMUNICATION BETWEEN CLIENTS AND SERVER, I WILL TRY MY BEST TO UNDERSTAND
+*/
+
+
+
+
+
+
+
 @WebServlet("/ProxyMove")
 public class ProxyMove extends HttpServlet {
 	private static final long serialVersionUID = 1L;
