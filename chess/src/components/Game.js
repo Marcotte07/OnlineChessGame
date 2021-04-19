@@ -67,29 +67,6 @@ export function move(from, to, promotion) {
     // https://stackoverflow.com/questions/23051416/uncaught-invalidstateerror-failed-to-execute-send-on-websocket-still-in-co
 
 
-    var send = function (message, callback) {
-        waitForConnection(function () {
-            ws.send(message);
-            if (typeof callback !== 'undefined') {
-              callback();
-            }
-        }, 1000);
-    };
-    
-    var waitForConnection = function (callback, interval) {
-        if (ws.readyState === 1) {
-            callback();
-        } else {
-            // optional: implement backoff for interval here
-            setTimeout(function () {
-                waitForConnection(callback, interval);
-            }, interval);
-        }
-    };
-    // getting an error when i send this to websocket, why? 
-    ws.addEventListener('error', function (event) {
-        alert('WebSocket error: ', event);
-      });
     
     ws.send("please help me i am suffering greatly")
     //send("check", function(){});
