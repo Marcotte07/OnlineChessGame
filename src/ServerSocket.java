@@ -17,21 +17,22 @@ public class ServerSocket {
 
 	//private static Vector<Session> sessionVector = new Vector<Session>();
 	// since open() is synchronized, queue of size 2 makes sense
+	// TODO: maybe sessionQueue should be size 1? not sure how to do this properly - Sasoun
 	private static BlockingQueue<Session> sessionQueue = new LinkedBlockingQueue<Session>(2);
 	private static Map<Session, Session> opponentSession = new ConcurrentHashMap<Session, Session>();
 	
 	// decided to make this synchronized because p much the entire function is critical section
 	@OnOpen
-	public void open(Session session) {
+	public synchronized void open(Session session) {
 		System.out.println("Connection made!");
 	//	sessionVector.add(session);
+
 		// if another player is waiting in the queue, start a game
-		
 		if (sessionQueue.size() > 0) {
 			Session opponent = sessionQueue.remove();
 			opponentSession.put(session, opponent);
 			opponentSession.put(opponent, session);
-			// TODO: start a game here
+			// TODO: start a game here 
 			
 			
 			
