@@ -83,6 +83,7 @@ export function move(from, to, promotion) {
             }, interval);
         }
     };
+    // getting an error when i send this to websocket, why? 
     send("check", function(){});
  //   send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
 }
