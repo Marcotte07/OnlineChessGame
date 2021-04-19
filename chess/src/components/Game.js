@@ -59,6 +59,9 @@ export function move(from, to, promotion) {
     ws.onclose = function(event) {
        // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
     }
+    ws.onerror = function(event) {
+        alert('check');
+    }
 
     // had to include these two functions because having a Connecting error... it's hella annoying
     // https://stackoverflow.com/questions/23051416/uncaught-invalidstateerror-failed-to-execute-send-on-websocket-still-in-co
@@ -84,7 +87,12 @@ export function move(from, to, promotion) {
         }
     };
     // getting an error when i send this to websocket, why? 
-    send("check", function(){});
+    ws.addEventListener('error', function (event) {
+        alert('WebSocket error: ', event);
+      });
+    
+    ws.send("please help me i am suffering greatly")
+    //send("check", function(){});
  //   send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
 }
 
