@@ -11,10 +11,13 @@ https://drive.google.com/drive/u/1/folders/0ABNxb_st-Dg3Uk9PVA
 Install React (Create-React-App) through Node.js at link below:
 `https://nodejs.org/en/`
  
-Afterword, may have to ru if npm command not working: 
+Afterword, may have to run if npm command not working: 
 `sudo apt-get install npm` 
 
+Restart Computer and make sure npm command is recognized
+
 Next in project chess directory run: 
+
 ```
 npm install chess.js
 npm install rxjs
