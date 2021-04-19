@@ -36,10 +36,10 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-
-var ws = new WebSocket("ws://localhost:8088/UGH/ws");
+var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
 // change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
 export function move(from, to, promotion) {
+
     let tempMove = {from, to}
     if(promotion) {
         tempMove.promotion = promotion

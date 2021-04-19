@@ -53,12 +53,12 @@ public class ServerSocket {
 	
 	@OnClose
 	public void close(Session session) {
-		System.out.println("Disconnecting!");
+		System.out.println("sdfsdfsdfsdfsdfsdfsdfsdfsdf!");
 		//sessionVector.remove(session);
 	}
 	
 	@OnError
 	public void error(Throwable error) {
-		System.out.println("Error!");
+		error.printStackTrace();
 	}
 }
