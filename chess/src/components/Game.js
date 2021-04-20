@@ -1,10 +1,10 @@
 import * as Chess from 'chess.js'
 import {BehaviorSubject} from 'rxjs'
+import App from '../App';
 import PromotionChoice from './PromotionChoice'
-
+import ws from '../App'
 
 const chess = new Chess();
-
 export const gameSubject = new BehaviorSubject({
     board: chess.board
 })
@@ -34,10 +34,13 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
-export var color = 'b'
+//var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
+var color = 'w'
+
+
 // change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
 export function move(from, to, promotion) {
+
 
     let tempMove = {from, to}
     if(promotion) {
@@ -46,28 +49,42 @@ export function move(from, to, promotion) {
     const legalMove = chess.move(tempMove)
     if(legalMove) {
         updateGame();
-    }
-    // Now block here for opponents move to come back
-    ws.onopen = function(event) {
-        // todo: add something here possibly?
-		//document.getElementById("mychat").innerHTML += "Connected!<br />";
-    }
-    ws.onmessage = function(event) {
-       // document.getElementById("mychat").innerHTML += event.data + "<br />";
-    }
-    ws.onclose = function(event) {
-       // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
-    }
-    ws.onerror = function(event) {
-        alert('check');
-    }
+        ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}"}`, function(){});
+    }    
 
-    // had to include these two functions because having a Connecting error... it's hella annoying
-    // https://stackoverflow.com/questions/23051416/uncaught-invalidstateerror-failed-to-execute-send-on-websocket-still-in-co
+// Now block here for opponents move to come back
+// TODO; randomly assign color
+ws.onopen = function(event) {
+    //   var jsonColor = JSON.parse(event.data);
+  //  color = jsonColor.color;
 
+  
+}
+ws.onmessage = function(event) {
 
-    
-    ws.send(`{"from":"${from}","to":"${to}","promotion":${promotion}}`, function(){});
+    var jsonMove = JSON.parse(event.data);
+   // alert(event.data);
+
+        var from = jsonMove.from;
+        var to = jsonMove.to;
+        var promotion = jsonMove.promotion
+        let tempMove = {from, to}
+        if(promotion) {
+            tempMove.promotion = promotion
+        }
+        const legalMove = chess.move(tempMove)
+        if(legalMove) {
+            updateGame();
+        }    
+ 
+}
+ws.onclose = function(event) {
+    // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
+}
+ws.onerror = function(event) {
+   // alert('check');
+}
+
 }
 
 function updateGame(pendingPromotion) {
@@ -78,6 +95,7 @@ function updateGame(pendingPromotion) {
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
+        color,
         result: isGameOver ? getGameResult() : null
     }
 
