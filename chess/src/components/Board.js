@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import BoardSquare from './BoardSquare'
-import color from './Game'
+import {color} from './Game'
 
 
-export default function Board({board, turn, color}){
-   // alert(color)
+export default function Board({board, turn}){
     const [currBoard, setCurrBoard] = useState([]);
     useEffect(() => {
         setCurrBoard(
@@ -15,7 +14,10 @@ export default function Board({board, turn, color}){
     function getXYPosition(i) {
         const x = color === 'w' ? i % 8 : Math.abs(i % 8 - 7);
         const y = color === 'w' ? Math.abs(Math.floor(i / 8) - 7) : Math.floor(i / 8)
-
+        /*
+        const x = i % 8;
+        const y = Math.abs(Math.floor(i / 8) - 7);
+        */
         return {x, y}
     }
     function isBlack (i) {

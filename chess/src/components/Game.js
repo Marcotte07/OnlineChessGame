@@ -1,10 +1,11 @@
+import { getByPlaceholderText } from '@testing-library/dom';
 import * as Chess from 'chess.js'
 import {BehaviorSubject} from 'rxjs'
-import App from '../App';
 import PromotionChoice from './PromotionChoice'
-import ws from '../App'
+
 
 const chess = new Chess();
+
 export const gameSubject = new BehaviorSubject({
     board: chess.board
 })
@@ -34,36 +35,20 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-//var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
-var color = 'w'
+var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
+export var color = 'b'
 
-
-// change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
-export function move(from, to, promotion) {
-
-
-    let tempMove = {from, to}
-    if(promotion) {
-        tempMove.promotion = promotion
-    }
-    const legalMove = chess.move(tempMove)
-    if(legalMove) {
-        updateGame();
-        ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}"}`, function(){});
-    }    
 
 // Now block here for opponents move to come back
 // TODO; randomly assign color
 ws.onopen = function(event) {
     //   var jsonColor = JSON.parse(event.data);
-  //  color = jsonColor.color;
-
-  
+  //  color = jsonColor.color;//  
 }
 ws.onmessage = function(event) {
-
+    alert(event.data);
+/*
     var jsonMove = JSON.parse(event.data);
-   // alert(event.data);
 
         var from = jsonMove.from;
         var to = jsonMove.to;
@@ -74,16 +59,31 @@ ws.onmessage = function(event) {
         }
         const legalMove = chess.move(tempMove)
         if(legalMove) {
+            color = jsonMove.color
             updateGame();
         }    
- 
+ */
 }
 ws.onclose = function(event) {
     // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
 }
 ws.onerror = function(event) {
-   // alert('check');
+    alert('check');
 }
+
+// change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
+export function move(from, to, promotion) {
+    let tempMove = {from, to}
+    if(promotion) {
+        tempMove.promotion = promotion
+    }
+    const legalMove = chess.move(tempMove)
+    if(legalMove) {
+        updateGame();
+        ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}","color":"w"}`, function(){});
+    }    
+
+
 
 }
 
@@ -95,7 +95,6 @@ function updateGame(pendingPromotion) {
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
-        color,
         result: isGameOver ? getGameResult() : null
     }
 
