@@ -35,7 +35,7 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-var ws = new WebSocket("ws://localhost:8088/UGH/Test");
+var ws = new WebSocket("ws://localhost:6969/Test/idk");
 export var color = 'b'
 
 
@@ -45,23 +45,28 @@ ws.onopen = function(event) {
     //   var jsonColor = JSON.parse(event.data);
   //  color = jsonColor.color;//  
 }
+var firstText = true;
 ws.onmessage = function(event) {
     alert(event.data);
+    if (!firstText) {
+        var jsonMove = JSON.parse(event.data);
 
-    var jsonMove = JSON.parse(event.data);
-
-    var from = jsonMove.from;
-    var to = jsonMove.to;
-    var promotion = jsonMove.promotion
-    let tempMove = {from, to}
-    if(promotion) {
-        tempMove.promotion = promotion
+        var from = jsonMove.from;
+        var to = jsonMove.to;
+        var promotion = jsonMove.promotion
+        let tempMove = {from, to}
+        if(promotion) {
+            tempMove.promotion = promotion
+        }
+        const legalMove = chess.move(tempMove)
+        if(legalMove) {
+            color = jsonMove.color
+            updateGame();
+        }    
+    } else {
+        firstText = false;
+        color = event.data;
     }
-    const legalMove = chess.move(tempMove)
-    if(legalMove) {
-        color = jsonMove.color
-        updateGame();
-    }    
  
 }
 ws.onclose = function(event) {
