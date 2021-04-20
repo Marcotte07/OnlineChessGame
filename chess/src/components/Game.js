@@ -3,9 +3,7 @@ import {BehaviorSubject} from 'rxjs'
 import PromotionChoice from './PromotionChoice'
 
 
-let promotion = 'rnb2bnr/pppPkppp/8/4p3/7q/8/PPPP1PPP/RNBQKBNR w KQ - 1 5'
-let staleMate = '4k3/4P3/4K3/8/8/8/8/8 b - - 0 78'
-const chess = new Chess(staleMate);
+const chess = new Chess();
 
 export const gameSubject = new BehaviorSubject({
     board: chess.board

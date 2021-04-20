@@ -8,7 +8,7 @@ function App() {
   const [board, setBoard] = useState([]);
   const [isGameOver, setIsGameOver] = useState()
   const [result, setResult] = useState()
-  
+  const [turn, setTurn] = useState()
   
   useEffect(() => {
     initGame()
@@ -16,6 +16,7 @@ function App() {
       setBoard(game.board)
       setIsGameOver(game.isGameOver)
       setResult(game.result)
+      setTurn(game.turn)
     })
     return () => subscribe.unsibscribe()
   }, [])
@@ -32,7 +33,7 @@ function App() {
         </h2>
       )}
       <div className = "board-container">
-        <Board board = {board} /> 
+        <Board board = {board} turn={turn}/> 
       </div> 
       {result && <p className = "vertical-text">{result}</p>}
     </div> 
