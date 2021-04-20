@@ -35,7 +35,7 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-var ws = new WebSocket("ws://localhost:6969/Test/idk");
+var ws = new WebSocket("ws://localhost:8011/check/test");
 export var color = 'b'
 
 
@@ -47,7 +47,6 @@ ws.onopen = function(event) {
 }
 var firstText = true;
 ws.onmessage = function(event) {
-    alert(event.data);
     if (!firstText) {
         var jsonMove = JSON.parse(event.data);
 
@@ -60,12 +59,14 @@ ws.onmessage = function(event) {
         }
         const legalMove = chess.move(tempMove)
         if(legalMove) {
-            color = jsonMove.color
+           // color = jsonMove.color
             updateGame();
         }    
     } else {
         firstText = false;
         color = event.data;
+        updateGame()
+        alert("the color is " + color)
     }
  
 }
@@ -85,7 +86,7 @@ export function move(from, to, promotion) {
     const legalMove = chess.move(tempMove)
     if(legalMove) {
         updateGame();
-        ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}","color":"w"}`, function(){});
+        ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}"}`, function(){});
     }    
 
 
