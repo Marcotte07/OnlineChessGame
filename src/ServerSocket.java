@@ -21,9 +21,9 @@ public class ServerSocket {
 	private static Map<Session, Session> opponentSession = new ConcurrentHashMap<Session, Session>();
 	//private static Map<Session, String> color = new ConcurrentHashMap<Session, String>();
 	
-	// decided to make this synchronized because p much the entire function is critical section
+	// decided to make this synchronized because pretty much the entire function is critical section
 	@OnOpen
-	public void open(Session session) throws IOException {
+	public synchronized void open(Session session) throws IOException {
 		System.out.println(" ddddmade!");
 	//	sessionVector.add(session);
 		// if another player is waiting in the queue, start a game
