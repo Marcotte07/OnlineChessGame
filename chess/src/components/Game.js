@@ -35,7 +35,7 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
+var ws = new WebSocket("ws://localhost:8088/UGH/Test");
 export var color = 'b'
 
 
@@ -47,28 +47,28 @@ ws.onopen = function(event) {
 }
 ws.onmessage = function(event) {
     alert(event.data);
-/*
+
     var jsonMove = JSON.parse(event.data);
 
-        var from = jsonMove.from;
-        var to = jsonMove.to;
-        var promotion = jsonMove.promotion
-        let tempMove = {from, to}
-        if(promotion) {
-            tempMove.promotion = promotion
-        }
-        const legalMove = chess.move(tempMove)
-        if(legalMove) {
-            color = jsonMove.color
-            updateGame();
-        }    
- */
+    var from = jsonMove.from;
+    var to = jsonMove.to;
+    var promotion = jsonMove.promotion
+    let tempMove = {from, to}
+    if(promotion) {
+        tempMove.promotion = promotion
+    }
+    const legalMove = chess.move(tempMove)
+    if(legalMove) {
+        color = jsonMove.color
+        updateGame();
+    }    
+ 
 }
 ws.onclose = function(event) {
     // document.getElementById("mychat").innerHTML += "Disconnected!<br />";
 }
 ws.onerror = function(event) {
-    alert('check');
+    //alert('check');
 }
 
 // change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
