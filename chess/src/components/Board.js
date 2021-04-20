@@ -1,10 +1,25 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import BoardSquare from './BoardSquare'
 
-export default function Board({board}){
+var getthestupidcolor = require('./Game')
+var color = getthestupidcolor.color
+export default function Board({board, turn}){
+
+    
+    const [currBoard, setCurrBoard] = useState([]);
+    useEffect(() => {
+        setCurrBoard(
+            color === 'w' ? board.flat() : board.flat().reverse()
+    
+        )
+    }, [board, turn])
     function getXYPosition(i) {
+        const x = color === 'w' ? i % 8 : Math.abs(i % 8 - 7);
+        const y = color === 'w' ? Math.abs(Math.floor(i / 8) - 7) : Math.floor(i / 8)
+        /*
         const x = i % 8;
         const y = Math.abs(Math.floor(i / 8) - 7);
+        */
         return {x, y}
     }
     function isBlack (i) {
@@ -19,7 +34,7 @@ export default function Board({board}){
         return `${letter}${y + 1}`;
     }
     return <div className = "board">
-        {board.flat().map((piece, i) => (
+        {currBoard.map((piece, i) => (
         <div key = {i} className = "square">
              <BoardSquare 
              piece={piece} 

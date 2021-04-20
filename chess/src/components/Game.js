@@ -35,6 +35,7 @@ export function handleMove(from, to) {
     }
 }
 var ws = new WebSocket("ws://localhost:8088/UGH/cheese");
+export var color = 'b'
 // change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
 export function move(from, to, promotion) {
 
