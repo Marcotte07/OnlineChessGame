@@ -80,3 +80,12 @@
   border: 2px solid white;
   border-radius: 10px;
 }
+
+.test {
+  cursor: grab;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -35,9 +35,10 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
-var ws = new WebSocket("ws://localhost:8011/check/test");
-export var color = 'b'
+var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+export var color = 'b';
 
+var myMove = false;
 
 // Now block here for opponents move to come back
 // TODO; randomly assign color
@@ -61,10 +62,15 @@ ws.onmessage = function(event) {
         if(legalMove) {
            // color = jsonMove.color
             updateGame();
+            myMove = true;
         }    
     } else {
+
         firstText = false;
         color = event.data;
+        if(color === "w"){
+            myMove = true;
+        }
         updateGame()
         alert("the color is " + color)
     }
@@ -77,8 +83,10 @@ ws.onerror = function(event) {
     //alert('check');
 }
 
-// change this path if ur on another machine, DO NOT FORGET OR ELSE IT WONT WORK (working=poop)
 export function move(from, to, promotion) {
+    if(!myMove){
+        return;
+    }
     let tempMove = {from, to}
     if(promotion) {
         tempMove.promotion = promotion
@@ -87,10 +95,8 @@ export function move(from, to, promotion) {
     if(legalMove) {
         updateGame();
         ws.send(`{"from":"${from}","to":"${to}","promotion":"${promotion}"}`, function(){});
+        myMove = false;
     }    
-
-
-
 }
 
 function updateGame(pendingPromotion) {

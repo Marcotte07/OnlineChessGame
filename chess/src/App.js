@@ -7,7 +7,7 @@ function App() {
   const [board, setBoard] = useState([]);
   const [isGameOver, setIsGameOver] = useState()
   const [result, setResult] = useState()
-  
+  // const [color, setColor] = useState()
   
   useEffect(() => {
     initGame()
@@ -15,6 +15,7 @@ function App() {
       setBoard(game.board)
       setIsGameOver(game.isGameOver)
       setResult(game.result)
+      // setColor(game.color)
     })
     return () => subscribe.unsibscribe()
   }, [])
@@ -31,7 +32,7 @@ function App() {
         </h2>
       )}
       <div className = "board-container">
-        <Board board = {board} /> 
+        <Board board = {board}/> 
       </div> 
       {result && <p className = "vertical-text">{result}</p>}
     </div> 

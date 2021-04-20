@@ -12,7 +12,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 //
-@ServerEndpoint(value = "/ws")
+@ServerEndpoint(value = "/GameEndpoint")
 public class ServerSocket {
 
 	//private static Vector<Session> sessionVector = new Vector<Session>();
