@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {gameSubject, initGame, resetGame} from './components/Game'
 import Board from './components/Board'
 
+
 function App() {
   const [board, setBoard] = useState([]);
   const [isGameOver, setIsGameOver] = useState()
