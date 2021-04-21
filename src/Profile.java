@@ -56,9 +56,11 @@ public class Profile extends HttpServlet{
 				for(Game g : games) {
 					out.println("<tr>");
 					
+					String oppUsername = "";
+					
 					//If user was white player
 					if(g.whitePlayerId == u.id) {
-						
+						oppUsername = q.searchUser(g.blackPlayerId).username;
 						//W/L
 						if(g.gameStatus.toLowerCase().equals("win")) {
 							out.println("<th>Win</th>");
@@ -69,7 +71,7 @@ public class Profile extends HttpServlet{
 						}
 						
 						//Game
-						out.println("<th><span style=\"color:green\">"+username+"</span> vs "+q.searchUser(g.blackPlayerId).username+"</th>");
+						out.println("<th><a href=\"profile.html?name=" + username + "\"><span style=\"color:green\">"+username+"</span></a> vs <a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a></th>");
 						
 						//Player Elo
 						out.println("<th>" + g.whitePlayerElo + "</th>");
@@ -78,6 +80,7 @@ public class Profile extends HttpServlet{
 					
 					//If user was black player
 					} else {
+						oppUsername = q.searchUser(g.whitePlayerId).username;
 						//W/L
 						if(g.gameStatus.toLowerCase().equals("loss")) {
 							out.println("<th>Win</th>");
@@ -88,7 +91,7 @@ public class Profile extends HttpServlet{
 						}
 						
 						//Game
-						out.println("<th> "+q.searchUser(g.whitePlayerId).username+" vs <span style=\"color:green\"> "+username+ "</span></th>");
+						out.println("<th><a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a> vs <a href=\"profile.html?name=" + username + "\"><span style=\"color:green\"> "+username+ "</a></span></th>");
 						
 						//Player Elo
 						out.println("<th>" + g.blackPlayerElo + "</th>");
