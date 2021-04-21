@@ -39,12 +39,15 @@ var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
 export var color = 'b';
 
 var myMove = false;
-
+var hasStarted = false;
 // Now block here for opponents move to come back
 // TODO; randomly assign color
 ws.onopen = function(event) {
     //   var jsonColor = JSON.parse(event.data);
-  //  color = jsonColor.color;//  
+  //  color = jsonColor.color;// 
+  
+    //hasStarted = false;
+    //updateGame();
 }
 var firstText = true;
 ws.onmessage = function(event) {
@@ -65,7 +68,7 @@ ws.onmessage = function(event) {
             myMove = true;
         }    
     } else {
-
+        hasStarted = true;
         firstText = false;
         color = event.data;
         if(color === "w"){
@@ -107,7 +110,8 @@ function updateGame(pendingPromotion) {
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
-        result: isGameOver ? getGameResult() : null
+        result: isGameOver ? getGameResult() : null,
+        started: hasStarted
     }
 
     gameSubject.next(newGame)

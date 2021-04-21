@@ -7,7 +7,7 @@ function App() {
   const [board, setBoard] = useState([]);
   const [isGameOver, setIsGameOver] = useState()
   const [result, setResult] = useState()
-  // const [color, setColor] = useState()
+  const [started, setStarted] = useState()
   
   useEffect(() => {
     initGame()
@@ -15,13 +15,19 @@ function App() {
       setBoard(game.board)
       setIsGameOver(game.isGameOver)
       setResult(game.result)
-      // setColor(game.color)
+      setStarted(game.started)
     })
     return () => subscribe.unsibscribe()
   }, [])
 
   return (
+    
+<div> 
+  <div className = "searching">
+    {started ? "" : <h1> Searching For Game </h1>}
+  </div>
     <div className = "container">
+
       {isGameOver && (
         <h2 className = "vertical-text"> GAME OVER
           <button onClick={resetGame}> 
@@ -36,6 +42,7 @@ function App() {
       </div> 
       {result && <p className = "vertical-text">{result}</p>}
     </div> 
+    </div>
   );
 }
 
