@@ -51,6 +51,7 @@ public class Leaderboards extends HttpServlet{
 				
 				place++;
 			}
+			out.println("</table>");
 			out.close();
 			q.close();
 		} catch(SQLException sqle) {

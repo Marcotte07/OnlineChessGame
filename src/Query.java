@@ -132,7 +132,7 @@ public class Query {
 	
 	public Vector<Game> getPlayerGames(String username) {
 		
-			Vector<Game> games = null;
+			Vector<Game> games = new Vector<Game>();
 			PreparedStatement ps = null;
 			ResultSet rs = null;
 			
@@ -140,15 +140,79 @@ public class Query {
 			int id = player.id;
 			try {
 				//TODO: Finish get player games function
-				String query = "SELECT * FROM chess.game a WHERE white_player_id=1 or black_player_id=1";
-				ps = conn.prepareStatement("SELECT * FROM User WHERE username=?");
+				String query = "SELECT * FROM game a WHERE white_player_id=? or black_player_id=? ORDER BY game_id DESC";
+				ps = conn.prepareStatement(query);
+				ps.setInt(1, id);
+				ps.setInt(2, id);
+				rs = ps.executeQuery();
+				
+				while(rs.next()) {
+					games.add(new Game(
+							rs.getInt("game_id"), 
+							rs.getInt("white_player_id"), 
+							rs.getInt("black_player_id"), 
+							rs.getString("game_status"), 
+							rs.getTime("start_time"), 
+							rs.getTime("end_time"), 
+							rs.getDate("start_time"), 
+							rs.getDate("end_time"), 
+							rs.getInt("white_player_elo"), 
+							rs.getInt("black_player_elo")));
+				}
+				
+				if(rs != null) 
+					rs.close();
+				if(ps != null)
+					ps.close();
 			} catch (SQLException sqle) {
 				System.out.println("SQLE: " + sqle);
 			}
-			
-			return null; //TODO this is not done
+
+			return games;
 	}
 	
+	public User searchUser(int id) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM User "
+					+ "WHERE user_id=?");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			
+			// check invalid username
+			if (!rs.next()) 
+				return null;
+			
+			return new User(
+					rs.getInt("user_id"),
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getString("firstname"),
+					rs.getString("lastname"),
+					rs.getString("date_created"),
+					
+					rs.getInt("elo"),
+					rs.getInt("num_wins"),
+					rs.getInt("num_losses"),
+					rs.getInt("num_ties"),
+					rs.getInt("num_games")
+					);
+		} catch(ParseException pe) {
+			pe.printStackTrace();
+			return null;
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
+	}
 	
 	public User searchUser(String username) {
 		PreparedStatement ps = null;

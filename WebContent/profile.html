@@ -38,8 +38,8 @@
 		}
 		
 		
-		function test() {
-			document.getElementById('name').innerHTML = "<h2>" + findGetParameter("name") + "<h2>";
+		function getName() {
+			document.getElementById('name').innerHTML = "<h2>" + findGetParameter("name").toUpperCase(); + "<h2>";
 		}
 	
 	</script>
@@ -48,7 +48,7 @@
 
 	<div id="name"></div>
 	<div id="content"></div>
-	<script>test()</script>
+	<script>getName()</script>
 	<script>getProfileData()</script>
 	
 

@@ -1,26 +1,30 @@
+import java.util.*;
 
 public class Game {
 
-	public String gameId;
-	public String whitePlayerId;
-	public String blackPlayerId;
+	public int gameId;
+	public int whitePlayerId;
+	public int blackPlayerId;
 	public String gameStatus;
-	public String startTime;
-	public String endTime;
-	public String whitePlayerElo;
-	public String blackPlayerElo;
+	public Date startTime;
+	public Date endTime;
+	public Date startDate;
+	public Date endDate;
+	public int whitePlayerElo;
+	public int blackPlayerElo;
 	
 	public Game(
-			String gameId,
-			String whitePlayerId,
-			String blackPlayerId,
+			int gameId,
+			int whitePlayerId,
+			int blackPlayerId,
 			String gameStatus,
-			String startTime,
-			String endTime,
-			String whitePlayerElo,
-			String blackPlayerElo
+			Date startTime,
+			Date endTime,
+			Date startDate,
+			Date endDate,
+			int whitePlayerElo,
+			int blackPlayerElo
 			) {
-		
 		this.gameId = gameId;
 		this.whitePlayerElo = whitePlayerElo;
 		this.blackPlayerElo = blackPlayerElo;
@@ -29,6 +33,8 @@ public class Game {
 		this.gameStatus = gameStatus;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		
 	}
 }
