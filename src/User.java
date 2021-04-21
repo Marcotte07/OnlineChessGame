@@ -40,7 +40,7 @@ public class User {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.dateCreated = dateCreated;
-		
+		this.password = password;
 		this.elo = elo;
 		this.numWins = numWins;
 		this.numLosses = numLosses;
@@ -69,13 +69,23 @@ public class User {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		
+		this.password = password;
 		this.dateCreated = dateCreated;
 		this.elo = elo;
 		this.numWins = numWins;
 		this.numLosses = numLosses;
 		this.numTies = numTies;
 		this.numGames = numGames;		
+	}
+	
+	public String toString() {
+		String out = "id: " + id + "\n";
+		out += "username: " + username + "\n";
+		out += "password: " + password + "\n";
+		out += "firstname: " + firstname + "\n";
+		out += "lastname: " + lastname + "\n";
+		
+		return out;
 	}
 	
 }

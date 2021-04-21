@@ -3,8 +3,45 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Chess</title>
+
+<script>
+	function logout() {
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", "Logout", true );
+	    xmlHttp.send(null);
+	    return xmlHttp.responseText;
+	}
+	
+	function checkLoginStatus()
+	{
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", "GetLoginCookie", false );
+	    xmlHttp.send( null );
+	    
+	    if(xmlHttp.responseText != "none") {
+	    	document.getElementById("tmp").innerHTML= "LOGGED IN!";
+	    }else {
+	    	document.getElementById("tmp").innerHTML= "not logged in";
+	    }
+	    return xmlHttp.responseText;
+	}
+	
+</script>
 </head>
 <body>
-Hello world
+	<a href="leaderboards.html">Leaderboards</a>
+	||
+	<a href="play.html">Play</a>
+	||
+	<a href="profile.html">Profile</a>
+	||
+	<a href="login.html">Login</a>
+	||
+	<a href="" onclick="logout();">Logout</a>
+	
+	<br><br>
+	
+	<button onclick="checkLoginStatus()">Has cookie?</button>
+	<span id="tmp"></span>
 </body>
 </html>

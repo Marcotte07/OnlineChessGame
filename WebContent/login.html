@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Chess</title>
+<script>
+
+	function callLoginServlet() {
+		document.getElementById('invalid_login').innerHTML = "";
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open("POST", "Login?uname=" + document.getElementById('uname').value + "&pwd=" + document.getElementById('pwd').value, true );
+	    xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	    xmlHttp.onreadystatechange = function() {
+	    	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+	    		if (xmlHttp.responseText) {
+			    	if(this.responseText == "valid") {
+			    		location.href = 'index.html';
+			    	} else {
+		    			document.getElementById('invalid_login').style.color = 'red';
+				    	document.getElementById('invalid_login').innerHTML = "Invalid Username or Password!";
+			    	}
+	    		}
+	    	}
+	    }
+	    xmlHttp.send();
+	}
+</script>
+</head>
+<body>
+<h1>Login</h1>
+	<form name="login" onsubmit="callLoginServlet();return false">
+		<p>Username:</p>
+		<div class="text-box"> 
+			<input type="text" id="uname" name="uname" required><br><br>
+		</div>
+		<p>Password:</p> 
+		<div class="text-box"> 
+	  		<input type="password" id="pwd" name="pwd" required><br><br>
+	  	</div>
+  		<input type="submit" value="Sign In"> <span id="invalid_login"></span><br>
+  		
+	</form>
+</body>
+</html>
