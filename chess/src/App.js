@@ -37,9 +37,9 @@ function App() {
 
       {isGameOver && (
         <h2 className = "vertical-text"> GAME OVER
-          <button onClick={resetGame}> 
+          <button onClick = {goToHomeMenu()}> 
           <span className = "vertical-text"> 
-            NEW GAME
+            Main Menu
             </span>
         </button>
         </h2>
@@ -59,5 +59,10 @@ function App() {
 </div>
   );
 }
+
+function goToHomeMenu(){
+  window.location.href = "http://localhost:8080/OnlineChessGame";
+}
+
 
 export default App;

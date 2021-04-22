@@ -76,7 +76,7 @@
 			// I (Nick) am changing this line to redirect to localhost 3000
 	    	document.getElementById("Play").innerHTML=  "<a style=\"color: #000; text-decoration: none;\"href=\"http://localhost:3000?name="+checkLoginStatus()+"\">PLAY (" + checkLoginStatus() + ")</a>";
 		} else {
-			document.getElementById("Play").innerHTML= "<a style=\"color: #000; text-decoration: none;\" href=\"index.html\">PLAY (GUEST)</a>";	
+			document.getElementById("Play").innerHTML= "<a style=\"color: #000; text-decoration: none;\" href=\"http://localhost:3000?name="+ "Guest User"+"\">PLAY (" + "Guest" + ")</a>";
 		}
 	}
 	
