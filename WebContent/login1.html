@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ChessLogIn</title>
+<script>
+	 var passcode;
+     function validate() {
+		$.ajax({
+		type: "GET",
+		url: "ValidServ",
+		data: {
+			email: document.myform.email.value,
+			user: document.myform.text.value,
+			pass: document.myform.text.value,
+		},
+		success: function (result) {
+			//alert("success");
+			passcode = result.passcode;
+			$("#verification").html("Please check your email "+document.myform.email.value+" and find the passcode for verification.");
+			document.getElementById("passcode").style.visibility = "visible";
+		}
+		});
+  	}
+ 	 function verify() {
+   		 	var userinput = document.myform.input.value;
+   		 	if ($.trim(userinput) != $.trim(passcode)) {
+   		 		alert("Passcode does not match.");
+   		 	} 
+   		 	else {
+   				alert("Verification succssful!");
+   		 	}
+   		 	
+   	 }
+ 	 
+ 	 function authetication(){
+ 		 
+ 	 }
+</script>
+</head>
+<body>
+
+	<form name="myform" action="ValidServ" method="GET" >
+		<fieldset>
+		<legend> Log In</legend>
+		Username <input type="text" name="user" REQUIRED/> <br>
+		Password <input type="text" name="pass" REQUIRED/> <br>
+		Forgot your Username/Password?<input type="submit" name="for" value="Reset Username/Password"/><br>
+		<input type="submit" name="sub" value="Submit"/>
+		</fieldset>
+		<fieldset>
+		<legend> Sign In</legend>
+		Email <input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" value="jjso.usc.edu"><br>
+		Username <input type="text" name="user" REQUIRED/> <br>
+		Password <input type="text" name="pass" REQUIRED/> <br>
+		<input type="submit" name="sub" value="Submit"/>
+		</fieldset>
+		<br>
+        <br>
+        <div id="verification"></div>
+        <div id="passcode" style="visibility: hidden">
+        	Passcode <input type="text" name="input">
+        	<input type="button" Value="Verify" onclick="verify();">
+        </div>  
+	</form>
+</body>
+</html>
