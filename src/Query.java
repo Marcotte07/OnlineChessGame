@@ -197,7 +197,7 @@ public class Query {
 					rs.getInt("num_losses"),
 					rs.getInt("num_ties"),
 					rs.getInt("num_games")
-					);
+				);
 		} catch(ParseException pe) {
 			pe.printStackTrace();
 			return null;
