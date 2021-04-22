@@ -7,6 +7,7 @@ CREATE TABLE User (
 	user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(30) NOT NULL UNIQUE,
     password VARCHAR(30) NOT NULL,
+    email VARCHAR(45) NOT NULL,
     firstname VARCHAR(30) NOT NULL,
     lastname VARCHAR(30) NOT NULL,
     date_created DATETIME NOT NULL,
