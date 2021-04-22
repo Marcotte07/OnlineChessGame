@@ -121,6 +121,49 @@
 	  margin:0px; 
 	  padding:0px;
 	}
+	
+	p {
+		font-weight: bold;
+		color: dark-grey;
+	}
+	
+	h1 {
+		color: black;
+	}
+		
+	
+	#mainpage {
+		margin-left: 5%;
+		margin-right: 5%;
+		margin-top: 50px;
+	}
+	
+
+	.text-box {
+		display: flex;
+	    width: 100%;
+	}
+	
+	input[type=text],
+	input[type=password],
+	input[type=email]{
+    	width: 90%;
+	}
+	
+	#leftsplit {
+  position: relative;
+  width: 50%;
+  float: left;
+  height: 100%;
+}
+
+#rightsplit {
+  position: relative;
+  width: 50%;
+  float: right;
+  height: 100%;
+}
+	
 </style>
 </head>
 <body onload="navbar()">
@@ -147,27 +190,27 @@
 	<div id="rightsplit" class="split right">
 		<h1>Sign Up</h1>
 			<form name="signup" onsubmit="signupJs();return false">
-				<p>First Name:</p>
+				<p>First Name: <span id="name_too_long"></span></p>
 				<div class="text-box"> 
-					<input type="text" name="first_name" id="first_name" onkeyup="underMaxLength('first_name','name_too_long')" required><span id="name_too_long"></span><br><br>
+					<input type="text" name="first_name" id="first_name" onkeyup="underMaxLength('first_name','name_too_long')" required><br><br>
 				</div>
-				<p>Last Name:</p>
+				<p>Last Name: <span id="last_name_too_long"></span></p>
 				<div class="text-box"> 
-					<input type="text" name="last_name" id="last_name" onkeyup="underMaxLength('last_name','last_name_too_long')" required><span id="last_name_too_long"></span><br><br>
+					<input type="text" name="last_name" id="last_name" onkeyup="underMaxLength('last_name','last_name_too_long')" required><br><br>
 				</div>
-				<p>Email:</p>
+				<p>Email: <span id="email_taken"></span></p>
 				<div class="text-box"> 
-					<input type="email" name="sign_email" id="sign_email" onkeyup="underMaxLength('sign_email','email_taken')" required><span id="email_taken"></span><br><br>
+					<input type="email" name="sign_email" id="sign_email" onkeyup="underMaxLength('sign_email','email_taken')" required><br><br>
 				</div>
-				<p>Username:</p>
+				<p>Username: <span id="username_taken"></span></p>
 				<div class="text-box"> 
-					<input type="text" name="sign_uname" id="sign_uname" onkeyup="underMaxLength('sign_uname','username_taken')" required><span id="username_taken"></span><br><br>
+					<input type="text" name="sign_uname" id="sign_uname" onkeyup="underMaxLength('sign_uname','username_taken')" required><br><br>
 				</div>
-				<p>Password:</p>
+				<p>Password: <span id="passToolong"></span></p>
 			  	<div class="text-box"> 
-			  		<input type="password" id="subm_pwd" name="subm_pwd" onkeyup="verifyMatch();underMaxLength('subm_pwd','passToolong');" required><span id="passToolong"></span><br><br>
+			  		<input type="password" id="subm_pwd" name="subm_pwd" onkeyup="verifyMatch();underMaxLength('subm_pwd','passToolong');" required><br><br>
 				</div>
-				<p>Confirm Password:</p> <span id='message'></span><br>
+				<p>Confirm Password: <span id='message'></span></p><br>
 			  	<div class="text-box"> 
 			  		<input type="password" id="conf_subm_pwd" name="conf_subm_pwd" onkeyup='verifyMatch();' required><br><br>
 			  	</div>
