@@ -72,9 +72,9 @@
 	
 	function showPlayContent() {
 		if(checkLoginStatus() != "none") {
-	    	document.getElementById("Play").innerHTML=  "<a href=\"index.html?name="+checkLoginStatus()+"\">Play (" + checkLoginStatus() + ")</a>";
+	    	document.getElementById("Play").innerHTML=  "<a style=\"color: #000; text-decoration: none;\"href=\"index.html?name="+checkLoginStatus()+"\">PLAY (" + checkLoginStatus() + ")</a>";
 		} else {
-			document.getElementById("Play").innerHTML= "<a href=\"index.html\">Play (GUEST)</a>";	
+			document.getElementById("Play").innerHTML= "<a style=\"color: #000; text-decoration: none;\" href=\"index.html\">PLAY (GUEST)</a>";	
 		}
 	}
 
@@ -92,13 +92,20 @@
 	}
 	
 	#right-logo a{
+	  margin-left: 1%;
 	  float: left;
 	  font-weight: bold;
 	  font-size: 20px;
 	  color: #FFF;
 	  text-decoration: none;
 	}
-	
+
+	#Play {
+	  margin-left: 30%;
+  	  font-weight: bold;
+	  font-size: 20px;
+	}
+		
 	#topoptions {
 	  float: right;
 	}
@@ -125,8 +132,8 @@
 	
 	<nav>	
 		<div id="right-logo"><a href="index.html">Chess</a></div>
+		<span id="Play"></span>
 		<div id="topoptions">
-			<span id="Play"></span>
 			<span id="Home"><a href="index.html">Home</a></span>
 			<span id="Leaderboards"><a href="leaderboards.html">Leaderboards</a></span>
 			<span id="Profile"><a href="index.html">Profile</a></span>
