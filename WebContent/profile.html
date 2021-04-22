@@ -12,7 +12,9 @@
 		    	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 		    		if (xmlHttp.responseText) {
 		    			if(this.responseText == "none") {
-		    				document.getElementById('content').innerHTML = "Either no player profile has been specified, or the one provided does not exist in the system.";
+		    				document.getElementById('content').innerHTML = 
+		    					"Either no player profile has been specified, or the one " +
+		    					"provided does not exist in the system. Are you logged in?";
 		    			}else {
 		    				document.getElementById('content').innerHTML = this.responseText;
 		    			}

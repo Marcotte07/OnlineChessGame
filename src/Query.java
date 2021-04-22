@@ -103,7 +103,6 @@ public class Query {
 								rs.getString("firstname"),
 								rs.getString("lastname"),
 								rs.getString("date_created"),
-								
 								rs.getInt("elo"),
 								rs.getInt("num_wins"),
 								rs.getInt("num_losses"),
@@ -175,14 +174,19 @@ public class Query {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			System.out.println("SELECT * FROM User n WHERE user_id="+ id);
+			
 			ps = conn.prepareStatement("SELECT * FROM User "
 					+ "WHERE user_id=?");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			
 			// check invalid username
-			if (!rs.next()) 
+			if (!rs.next())  {
 				return null;
+			}
+				
+			System.out.print("returning user");
 			
 			return new User(
 					rs.getInt("user_id"),
@@ -191,13 +195,13 @@ public class Query {
 					rs.getString("firstname"),
 					rs.getString("lastname"),
 					rs.getString("date_created"),
-					
 					rs.getInt("elo"),
 					rs.getInt("num_wins"),
 					rs.getInt("num_losses"),
 					rs.getInt("num_ties"),
 					rs.getInt("num_games")
 					);
+			
 		} catch(ParseException pe) {
 			pe.printStackTrace();
 			return null;

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,13 +27,11 @@ public class GetLoginCookie extends HttpServlet{
   	  	String value = "";
   	  
   	  	if( cookies != null ) {
-  	  		System.out.println("cookies num: " + cookies.length);
 	  	  	for (int i = 0; i < cookies.length; i++) {
 	  	  		cookie = cookies[i];
 	  	  		if(cookie.getName().equals("userid")) {
 	  	  			found = true;
 	  	  			value = cookie.getValue();
-	  	  			System.out.println("cookies val: " + cookie.getValue());
 	  	  		}
 	  	  	}
   	  	} 
@@ -41,7 +40,17 @@ public class GetLoginCookie extends HttpServlet{
       		out.print("none");
       		System.out.println("no cookies found");
   		} else {
-  			out.print(value);
+  			try {
+	  			Query q = new Query();
+	  			User u = q.searchUser(Integer.parseInt(value));
+	  			System.out.println("Cookie found for: " + u.username);
+	  			out.print(u.username);
+	  			q.close();
+  			} catch (SQLException sqle) {
+  				System.out.println("sqle: " + sqle);
+  			} catch (ClassNotFoundException cnfe) {
+  				System.out.println("cnfe: " + cnfe);
+  			}
 		}
       	out.flush();
       	out.close();
