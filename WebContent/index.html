@@ -38,7 +38,65 @@
 	body { 
 	  margin:0px; 
 	  padding:0px;
+	  background-color: #1A1A1D;
 	}
+	
+	h1 {
+	   color: #FFF; 
+	   font-size: 50px;
+	}
+	
+	h3 {
+	   color: #FFF; 
+	   font-size: 35px;
+	   margin-left: 20%;
+	   margin-right: 20%;
+	   text-align: center;
+	}
+	
+	p {
+	   font-size: 24px;
+	   color: #FFF;
+	   padding: 5px;
+	}
+
+
+	.top-page {
+	  margin-left: 5%;
+	  padding: 15px;
+	}
+		
+	.middle-page {
+	  margin-left: 5%;
+	  padding: 15px;
+	  float: bottom;
+	}
+	
+	.image-div {
+	  float: right;
+	  width: 45%;
+	}
+	
+	.welcome-text {
+	  float: left;
+	  width: 45%;
+	}
+	
+	.elo-text {
+	  float: left;
+	  width: 45%;
+	}
+	
+	.elo-formula {
+		float: right;
+		width: 50%;
+	}
+	
+	.formulas {
+		margin-left: 3%;
+	}
+	
+	
 </style>
 </head>
 
@@ -46,12 +104,61 @@
 
 	<div id="nav-bar"></div>
 	
-	<div id="description">
-		<h1>Online Chess:</h1>
-		<p>
-			Welcome to online chess. Click the "PLAY" button at the top to start finding a game.
-		</p>
+		<br>
+		<h1 style="margin: auto; width: 50%;">Online Chess</h1><br><br>
+	
+	<div class="top-page" style="height: 390px;">
+
+		<div class="image-div">
+			<img src="images/chess-board.png" alt="Chess board logo" style="width:60%;height:60%;border-radius: 5%;">
+		</div>
+		
+		<div class="welcome-text">
+			
+			<h3>
+			Welcome to the #1 online chess website in Sal!
+			</h3>
+			
+			<p>
+				
+			Click the "PLAY" button at the top to start finding a game. If you are logged in you will be able to match and play against other players of your skill level. You can also play games as a guest but you cannot gain elo from your wins!
+			</p>
+		</div>
 	
 	</div>
+	
+	<div class="top-page">
+		<br><br>
+		<div class="elo-text">
+			<h3 style="text-align: left; margin-left: 0px">
+			What is Elo?
+			</h3>
+			
+			<p>
+			The Elo rating system is a method for calculating the relative skill levels of players. 
+			The performance rating is determined by the "algorithm of 400". The algorithm determines 
+			the probability of one player beating another. Then raises or lowers the winners or losers 
+			Elo respectively by this probability.
+			</p>
+		</div>
+		
+		<div class="elo-formula">
+			<p>In case you are wondering our Elo formulas are as follows: </p>
+			<br>
+			<div class="formulas">
+				<p style="font-size: 18px;">Probability of winning = 1.0 / (1.0 + 10^( (P1 - P2) / 400)))</p>
+				<p style="font-size: 18px;">winning_player_elo_gain = (100/tg) * (1.0 - WPp)</p>
+				<p style="font-size: 18px;">losing_player_elo_loss = (100/tg) * (1.0 - LPp)</p>
+				<p style="font-size: 15px;line-height: 2px;">Where:</p>
+				<p style="font-size: 15px;line-height: 2px;">tg = total_games</p>
+				<p style="font-size: 15px;line-height: 2px;">LPp = losing_player_win_probability</p>
+				<p style="font-size: 15px;line-height: 2px;">WPp = winning_player_win_probability</p>
+				<p style="font-size: 15px;line-height: 2px;">P1 = player1_elo</p>
+				<p style="font-size: 15px;line-height: 2px;">P2 = player2_elo</p>
+			</div>
+		
+		</div>
+	</div>
+	
 </body>
 </html>
