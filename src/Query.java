@@ -170,6 +170,53 @@ public class Query {
 			return games;
 	}
 	
+	
+	public User searchUser(String key, String value) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			System.out.println("SELECT * FROM User n WHERE " +key + "="+ value);
+			
+			ps = conn.prepareStatement("SELECT * FROM User "
+					+ "WHERE ?=?");
+			ps.setString(1, key);
+			ps.setString(2, value);
+			rs = ps.executeQuery();
+			
+			// check invalid username
+			if (!rs.next())  {
+				return null;
+			}
+			
+			return new User(
+					rs.getInt("user_id"),
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getString("firstname"),
+					rs.getString("lastname"),
+					rs.getString("date_created"),
+					rs.getInt("elo"),
+					rs.getInt("num_wins"),
+					rs.getInt("num_losses"),
+					rs.getInt("num_ties"),
+					rs.getInt("num_games")
+					);
+			
+		} catch(ParseException pe) {
+			pe.printStackTrace();
+			return null;
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
+	}
 	public User searchUser(int id) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -262,22 +309,23 @@ public class Query {
 		}
 	}
 	
-	public void createAccount(
-			String username, String password, String firstname, String lastname)
+	public void createAccount(String username, String email, String password, 
+							  String firstname, String lastname)
 	{
 		PreparedStatement ps = null;
 		try {
 			ps = conn.prepareStatement("INSERT INTO \n"
-					+ "user(username, password, firstname, lastname, date_created, elo, num_wins, num_losses,\n"
+					+ "user(username, email, password, firstname, lastname, date_created, elo, num_wins, num_losses,\n"
 					+ "num_ties, num_games) \n"
 					+ "VALUES\n"
-					+ "(?, ?, ?, ?, ?, 1000, 0, 0, 0, 0)");
+					+ "(?, ?, ?, ?, ?, ?, 1000, 0, 0, 0, 0)");
 			
 			ps.setString(1, username);
-			ps.setString(2, password);
-			ps.setString(3, firstname);
-			ps.setString(4, lastname);
-			ps.setString(5, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			ps.setString(2, email);
+			ps.setString(3, password);
+			ps.setString(4, firstname);
+			ps.setString(5, lastname);
+			ps.setString(6, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			ps.executeUpdate();
 
 		} catch (SQLException sqle) {

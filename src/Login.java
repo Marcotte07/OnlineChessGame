@@ -32,6 +32,7 @@ public class Login extends HttpServlet{
 				out.print("valid");
 				
 			}else {
+				System.out.println("Inavlid");
 				out.print("invalid");
 			}
 			

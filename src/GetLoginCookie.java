@@ -16,7 +16,6 @@ public class GetLoginCookie extends HttpServlet{
 	
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("getlogincookies");
 		Cookie[] cookies = request.getCookies();
 		Cookie cookie = null;
 		
@@ -38,12 +37,10 @@ public class GetLoginCookie extends HttpServlet{
 
       	if(!found) {
       		out.print("none");
-      		System.out.println("no cookies found");
   		} else {
   			try {
 	  			Query q = new Query();
 	  			User u = q.searchUser(Integer.parseInt(value));
-	  			System.out.println("Cookie found for: " + u.username);
 	  			out.print(u.username);
 	  			q.close();
   			} catch (SQLException sqle) {
