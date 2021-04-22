@@ -19,11 +19,15 @@
 	    xmlHttp.send( null );
 	    
 	    if(xmlHttp.responseText != "none") {
-	    	document.getElementById("tmp").innerHTML= "LOGGED IN!";
+	    	document.getElementById("tmp").innerHTML= "LOGGED IN!" + xmlHttp.responseText;
 	    }else {
 	    	document.getElementById("tmp").innerHTML= "not logged in";
 	    }
 	    return xmlHttp.responseText;
+	}
+	
+	function fillProfile() {
+		document.getElementById("profile").href = "profile.html?name=" + checkLoginStatus();
 	}
 	
 </script>
@@ -33,7 +37,7 @@
 	||
 	<a href="play.html">Play</a>
 	||
-	<a href="profile.html">Profile</a>
+	<a href="profile.html" id="profile" onclick="fillProfile();">Profile</a>
 	||
 	<a href="login.html">Login</a>
 	||
