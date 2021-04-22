@@ -35,23 +35,39 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
+
+console.log(document.cookie);
+
+// document.cookie = "username=Marcotte07";
 var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+
 export var color = 'b';
 
 var myMove = false;
 var hasStarted = false;
+
+export var myUsername = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('username='))
+    .split('=')[1]
+
+export var opponentUsername = "Waiting For Player To Connect";
 // Now block here for opponents move to come back
 // TODO; randomly assign color
 ws.onopen = function(event) {
-    //   var jsonColor = JSON.parse(event.data);
-  //  color = jsonColor.color;// 
-  
-    //hasStarted = false;
-    //updateGame();
+    ws.send(document.cookie);
 }
 var firstText = true;
 ws.onmessage = function(event) {
-    if (!firstText) {
+    
+    // If they send opponents username and any other info: 
+    if(event.data.substring(0, 9) == "username="){
+        opponentUsername = event.data.substring(9);
+        console.log("Player Connected, opponent username is game.js is: " + opponentUsername);
+        updateGame();
+    }
+    
+    else if (!firstText) {
         var jsonMove = JSON.parse(event.data);
 
         var from = jsonMove.from;
@@ -75,7 +91,6 @@ ws.onmessage = function(event) {
             myMove = true;
         }
         updateGame()
-        alert("the color is " + color)
     }
  
 }
@@ -110,7 +125,9 @@ function updateGame(pendingPromotion) {
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
-        result: isGameOver ? getGameResult() : null,
+        result: isGameOver ? getGameResult() : null, 
+        myUsername: myUsername,
+        opponentUsername: opponentUsername,
         started: hasStarted
     }
 
@@ -118,9 +135,12 @@ function updateGame(pendingPromotion) {
 }
 
 function getGameResult() {
+    // Lets send result of game to server in this method!
+
     if(chess.in_checkmate()) {
         const winner = (chess.turn() === "w") ? 'BLACK' : 'WHITE'
         return `CHECKMATE - WINNER - ${winner}`
+
     }
     else if (chess.in_draw()) {
         let reason = '50 - MOVES - RULE'
