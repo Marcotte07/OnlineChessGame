@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<script>
+	
+	//Change the 'login' to reflect if the user is signed in or not
+	function checkLoginStatus() {
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", "GetLoginCookie", false );
+	    xmlHttp.send( null );
+	    if(xmlHttp.responseText == "none") {
+	    	document.getElementById("login").innerHTML= "Login/Sign Up";
+	    	document.getElementById("login").href = "login.html";
+	    } else {
+	    	document.getElementById("login").innerHTML= "Logout";
+	    	document.getElementById("login").href = "index.html";
+	    }
+	    return xmlHttp.responseText;
+	}
+	
+	
+	function loginPage() {
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", "GetLoginCookie", false );
+	    xmlHttp.send( null );
+	    if(xmlHttp.responseText == "none") {
+	    	document.getElementById("login").innerHTML= "Login/Sign Up";
+	    	document.getElementById("login").href = "login.html";
+	    } else {
+	    	logout();
+	    	document.getElementById("login").href = "index.html";
+	    }
+	    return xmlHttp.responseText;
+	}
+	
+	//Log the user out
+	function logout() {
+	    var xmlHttp = new XMLHttpRequest();
+	    xmlHttp.open( "GET", "Logout", false );
+	    xmlHttp.send(null);
+	    return xmlHttp.responseText;
+	}
+	
+	
+	function selectedcss() {
+		var fullpathname = window.location.pathname;
+		var filename = fullpathname.replace(/^.*[\\\/]/, '');
+		var css = "padding: 8px 3px;border: 3px solid #fff;border-radius: 10px;"
+		
+		if(filename == "index.html") {
+			document.getElementById("custom-selected").innerHTML = "#Home {"+css+"}";
+		} else if(filename == "login.html") {
+			document.getElementById("custom-selected").innerHTML = "#Login {"+css+"}";
+		} else if(filename == "profile.html") {
+			document.getElementById("custom-selected").innerHTML = "#Profile {"+css+"}";
+		} else if(filename == "leaderboards.html") {
+			document.getElementById("custom-selected").innerHTML = "#Leaderboards {"+css+"}";
+		}
+		
+	}
+	
+	//Show or hide the profile page
+	function showProfilePage() {
+		
+		if(checkLoginStatus() != "none") {
+	    	document.getElementById("Profile").innerHTML= "<a href=\"profile.html?name="+checkLoginStatus()+"\">Profile</a>";
+		} else {
+	    	document.getElementById("Profile").innerHTML= "";
+	    	document.getElementById("login").href = "";		
+		}
+		
+	}
+	
+	function showPlayContent() {
+		if(checkLoginStatus() != "none") {
+	    	document.getElementById("Play").innerHTML=  "<a href=\"index.html?name="+checkLoginStatus()+"\">Play (" + checkLoginStatus() + ")</a>";
+		} else {
+			document.getElementById("Play").innerHTML= "<a href=\"index.html\">Play (GUEST)</a>";	
+		}
+	}
+
+</script>
+
+<style>
+	nav {
+	  list-style-type: none;
+	  margin: 0;
+	  padding: 15px;
+	  overflow: hidden;
+	  background-color: #b8ae95;
+      border-bottom-left-radius:30px;
+   	  border-bottom-right-radius:30px;
+	}
+	
+	#right-logo a{
+	  float: left;
+	  font-weight: bold;
+	  font-size: 20px;
+	  color: #FFF;
+	  text-decoration: none;
+	}
+	
+	#topoptions {
+	  float: right;
+	}
+	
+	#topoptions a{
+	  color: #000;
+	  font-weight: bold;
+	  font-size: 19px;
+	  text-align: center;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  }
+
+</style>
+
+	
+	<script>checkLoginStatus();</script>
+	<script>showProfilePage();</script>
+	<script>showPlayContent();</script>
+	<script>selectedcss();</script>
+	
+	<style id="custom-selected"></style>
+	
+	
+	<nav>	
+		<div id="right-logo"><a href="index.html">Chess</a></div>
+		<div id="topoptions">
+			<span id="Play"></span>
+			<span id="Home"><a href="index.html">Home</a></span>
+			<span id="Leaderboards"><a href="leaderboards.html">Leaderboards</a></span>
+			<span id="Profile"><a href="index.html">Profile</a></span>
+			<span id="Login"><a id="login" href="" onclick="loginPage();"></a></span>
+		</div>
+	</nav>
+

@@ -3,7 +3,14 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Chess</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script>
+	
+		//Load the top navbar
+		function navbar(){
+			  $("#nav-bar").load("nav.html");
+		}
+		
 		function getProfileData() {
 			var xmlHttp = new XMLHttpRequest();
 	    	xmlHttp.open("GET", "UserProfile?name=" + findGetParameter("name"), true );
@@ -25,7 +32,6 @@
 		    xmlHttp.send();
 		}	
 		
-		
 		function findGetParameter(parameterName) {
 		    var result = null,
 		        tmp = [];
@@ -46,8 +52,9 @@
 	
 	</script>
 </head>
-<body>
+<body onload="navbar()">
 
+	<div id="nav-bar"></div>
 	<div id="name"></div>
 	<div id="content"></div>
 	<script>getName()</script>

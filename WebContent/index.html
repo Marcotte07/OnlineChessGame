@@ -3,8 +3,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Chess</title>
-
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
+
+	//Load the top navbar
+	function navbar(){
+		  $("#nav-bar").load("nav.html");
+	}
+	
 	function logout() {
 	    var xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open( "GET", "Logout", true );
@@ -12,12 +18,11 @@
 	    return xmlHttp.responseText;
 	}
 	
-	function checkLoginStatus()
+	function fillLoginButton()
 	{
 	    var xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open( "GET", "GetLoginCookie", false );
 	    xmlHttp.send( null );
-	    
 	    if(xmlHttp.responseText != "none") {
 	    	document.getElementById("tmp").innerHTML= "LOGGED IN!" + xmlHttp.responseText;
 	    }else {
@@ -26,13 +31,14 @@
 	    return xmlHttp.responseText;
 	}
 	
-	function fillProfile() {
-		document.getElementById("profile").href = "profile.html?name=" + checkLoginStatus();
-	}
 	
 </script>
 </head>
-<body>
+
+<body onload="navbar()">
+
+	<div id="nav-bar"></div>
+	
 	<a href="leaderboards.html">Leaderboards</a>
 	||
 	<a href="play.html">Play</a>
@@ -45,7 +51,7 @@
 	
 	<br><br>
 	
-	<button onclick="checkLoginStatus()">Has cookie?</button>
+	<button id="tttttt" onclick="fillLoginButton();">Has cookie?</button>
 	<span id="tmp"></span>
 </body>
 </html>

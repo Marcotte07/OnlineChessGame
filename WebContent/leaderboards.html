@@ -3,7 +3,14 @@
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Chess</title>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script>
+	
+		//Load the top navbar
+		function navbar(){
+			  $("#nav-bar").load("nav.html");
+		}
+		
 		function getLeaderboards() {
 			var xmlHttp = new XMLHttpRequest();
 	    	xmlHttp.open("GET", "Leaderboards", true );
@@ -20,7 +27,10 @@
 	
 	</script>
 </head>
-<body>
+
+<body onload="navbar()">
+
+	<div id="nav-bar"></div>
 	<script>getLeaderboards()</script>
 	<div id="content"></div>
 
