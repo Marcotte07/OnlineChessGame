@@ -40,17 +40,18 @@ public class Query {
 			conn.close();
 	}
 	
-	Query(String ipAddress, int port, String user, String password) throws SQLException, ClassNotFoundException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		conn = DriverManager.getConnection("jdbc:mysql://" + ipAddress + ":"+ port 
-				+ "/chess?user=" + user + "&password=" + password);
-	}
+	String IP_ADDRESS_DB = "database-1.ct0zvlj1qp3l.us-east-2.rds.amazonaws.com";
+	int PORT_DB = 3306;
+
+	String USERNAME_DB = "admin";
+	String PASSWORD_DB = "sasouniscool";
 	
 	Query() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/chess"
-				+ "?user=root&password=root");
+		conn = DriverManager.getConnection("jdbc:mysql://" + IP_ADDRESS_DB + ":"+ PORT_DB 
+				+ "/chess?user=" + USERNAME_DB + "&password=" + PASSWORD_DB);
 	}
+
 	
 	// i am on the fence about declaring this as void.... should be boolean but im not sure
 	public boolean autheticate(String username, String password) {
@@ -463,12 +464,7 @@ public class Query {
 		// authenticate
 		Query q = null;
 		try {  
-			q = new Query(
-					"database-1.ct0zvlj1qp3l.us-east-2.rds.amazonaws.com",
-					3306,
-					"admin",
-					"sasouniscool"
-					); 
+			q = new Query(); 
 			q.autheticate("test", "test");
 
 		} catch (SQLException sqle) {
