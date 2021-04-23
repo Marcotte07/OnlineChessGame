@@ -268,6 +268,11 @@ public class Query {
 	public User searchUser(String username) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
+		if(username.toLowerCase().equals("userisguest")) {
+			return null;
+		}
+		
 		try {
 			ps = conn.prepareStatement("SELECT * FROM User "
 					+ "WHERE username=?");
@@ -309,6 +314,117 @@ public class Query {
 		}
 	}
 	
+	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, String whiteGameState) {
+		
+		User white = searchUser(whitePlayerUsername);
+		User black = searchUser(blackPlayerUsername);
+		
+		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		try {
+			
+			if(whiteGameState.toLowerCase().equals("win")) {
+				
+				if(white != null) {
+					ps = conn.prepareStatement("UPDATE user SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps.setInt(1, white.id);
+					ps.executeUpdate();
+				}
+				
+				if(black != null) {
+					ps2 = conn.prepareStatement("UPDATE user SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2.setInt(1, black.id);
+					ps2.executeUpdate();
+				}
+				
+
+			} else if (whiteGameState.toLowerCase().equals("loss")) {
+				if(black != null) {
+					ps = conn.prepareStatement("UPDATE user SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps.setInt(1, black.id);
+					ps.executeUpdate();
+				}
+				
+				if(white != null ) {
+					ps2 = conn.prepareStatement("UPDATE user SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2.setInt(1, white.id);
+					ps2.executeUpdate();
+				}
+			} else {
+				if(black != null) {
+					ps = conn.prepareStatement("UPDATE user SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps.setInt(1, black.id);
+					ps.executeUpdate();
+				}
+		
+				if(white != null) {
+					ps2 = conn.prepareStatement("UPDATE user SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2.setInt(1, white.id);
+					ps2.executeUpdate();
+				}
+			
+			}
+			
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) ps.close();
+				if (ps2 != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateElo(String winningPlayersUsername, String LosingPlayersUsername) {
+		System.out.println("Update Elo");
+		
+		User winner = searchUser(winningPlayersUsername);
+		User loser = searchUser(LosingPlayersUsername);
+		
+		int wElo = winner.elo;
+		int lElo = loser.elo;
+		
+		Double winningProbability =  1.0 / (1.0 + Math.pow(10.0,(lElo*1.0 - wElo*1.0)/400.0));
+		//Double losingProbability = 1.0 / (1.0 + Math.pow(10.0,(wElo*1.0 - lElo*1.0)/400.0));
+		
+		Double multiplier = 100.0;
+
+        int winningPlayerNewElo = (int)(multiplier * (1-winningProbability));
+        int losingPlayerNewElo = (int)(multiplier * (1-winningProbability)*-1.0);
+		
+		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		try {
+			
+			if(winner != null) {
+				ps = conn.prepareStatement("UPDATE user SET elo=elo+? WHERE user_id=?;");
+				ps.setInt(1, winningPlayerNewElo);
+				ps.setInt(2, winner.id);
+				ps.executeUpdate();
+			}
+			
+			if(loser != null) {
+				ps2 = conn.prepareStatement("UPDATE user SET elo=elo+? WHERE user_id=?;");
+				ps2.setInt(1, losingPlayerNewElo);
+				ps2.setInt(3, loser.id);
+				ps2.executeUpdate();
+			}
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		} finally {
+			try {
+				if (ps != null) ps.close();
+				if (ps2 != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
+		
+        
+	}
 	public void createAccount(String username, String email, String password, 
 							  String firstname, String lastname)
 	{
