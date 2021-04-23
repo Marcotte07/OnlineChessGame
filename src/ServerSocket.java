@@ -77,6 +77,9 @@ public class ServerSocket {
 			q.updatePlayerGamesPlayed(white, black, state);
 			
 			q.close();
+			
+			return;
+			
 			}catch (SQLException sqle) {
 				System.out.println("sqle: " + sqle);
 			} catch (ClassNotFoundException cnfe) {
@@ -85,13 +88,12 @@ public class ServerSocket {
 			
 		}
 		
-		opponentSession.get(session).getBasicRemote().sendText(message);
+		//opponentSession.get(session).getBasicRemote().sendText(message);
 		System.out.println(message);
 		// will leave this for debugging purposes
 
 		
 		// The client is sending USERNAME, send back opponents username!
-		System.out.println(message);
 		if(message.substring(0, 9).equals("username=")) {
 			cookieMap.put(session, message);
 			System.out.println(cookieMap);
@@ -128,6 +130,7 @@ public class ServerSocket {
 			Session opponent = opponentSession.get(session);
 			
 			opponent.getBasicRemote().sendText("YOU WON BY DEFAULT WOOOO");
+			
 			
 			
 			// opponent won, so send message and then update their score
