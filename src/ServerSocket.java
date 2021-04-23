@@ -74,7 +74,7 @@ public class ServerSocket {
 			Query q = new Query();	
 			
 			q.updateElo(white, black);
-			q.updatePlayerGamesPlayed(white, white, state);
+			q.updatePlayerGamesPlayed(white, black, state);
 			
 			q.close();
 			}catch (SQLException sqle) {
