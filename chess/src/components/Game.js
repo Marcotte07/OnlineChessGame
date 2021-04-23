@@ -6,6 +6,27 @@ import PromotionChoice from './PromotionChoice'
 
 const chess = new Chess();
 
+
+
+function parseURLParams(url) {
+    var queryStart = url.indexOf("?") + 1,
+        queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+        query = url.slice(queryStart, queryEnd - 1),
+        pairs = query.replace(/\+/g, " ").split("&"),
+        parms = {}, i, n, v, nv;
+
+    if (query === url || query === "") return;
+
+    for (i = 0; i < pairs.length; i++) {
+        nv = pairs[i].split("=", 2);
+        n = decodeURIComponent(nv[0]);
+        v = decodeURIComponent(nv[1]);
+
+        if (!parms.hasOwnProperty(n)) parms[n] = [];
+        parms[n].push(nv.length === 2 ? v : null);
+    }
+    return parms;
+}
 export const gameSubject = new BehaviorSubject({
     board: chess.board
 })
@@ -35,23 +56,52 @@ export function handleMove(from, to) {
         move(from, to)
     }
 }
+
+console.log(document.cookie);
+
+// document.cookie = "username=Marcotte07";
 var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+
 export var color = 'b';
 
 var myMove = false;
 var hasStarted = false;
+
+// Once cookie works this will be good
+// export var myUsername = document.cookie
+    
+export var myUsername = "Test";
+
+var result = null;
+var tmp = [];
+window.location.search
+.substr(1)
+.split("&")
+.forEach(function (item) {
+  tmp = item.split("=");
+  if (tmp[0] === "name") result = decodeURIComponent(tmp[1]);
+});
+
+console.log("result is" + result);
+myUsername = result;
+
+export var opponentUsername = "Waiting For Player To Connect";
 // Now block here for opponents move to come back
 // TODO; randomly assign color
 ws.onopen = function(event) {
-    //   var jsonColor = JSON.parse(event.data);
-  //  color = jsonColor.color;// 
-  
-    //hasStarted = false;
-    //updateGame();
+    ws.send("username="+myUsername);
 }
 var firstText = true;
 ws.onmessage = function(event) {
-    if (!firstText) {
+    
+    // If they send opponents username and any other info: 
+    if(event.data.substring(0, 9) == "username="){
+        opponentUsername = event.data.substring(9);
+        console.log("Player Connected, opponent username is game.js is: " + opponentUsername);
+        updateGame();
+    }
+    
+    else if (!firstText) {
         var jsonMove = JSON.parse(event.data);
 
         var from = jsonMove.from;
@@ -75,7 +125,6 @@ ws.onmessage = function(event) {
             myMove = true;
         }
         updateGame()
-        alert("the color is " + color)
     }
  
 }
@@ -110,7 +159,9 @@ function updateGame(pendingPromotion) {
         pendingPromotion,
         isGameOver,
         turn: chess.turn(),
-        result: isGameOver ? getGameResult() : null,
+        result: isGameOver ? getGameResult() : null, 
+        myUsername: myUsername,
+        opponentUsername: opponentUsername,
         started: hasStarted
     }
 
@@ -118,8 +169,30 @@ function updateGame(pendingPromotion) {
 }
 
 function getGameResult() {
+    // Lets send result of game to server in this method!
+    let whitePiecesUsername = ""
+    let blackPiecesUsername = ""
+    if(color == 'w'){
+        whitePiecesUsername = myUsername;
+        blackPiecesUsername = opponentUsername;
+    }
+    else{
+        whitePiecesUsername = myUsername;
+        blackPiecesUsername = opponentUsername;
+    }
     if(chess.in_checkmate()) {
         const winner = (chess.turn() === "w") ? 'BLACK' : 'WHITE'
+        
+        if(color == 'w' && winner == 'BLACK' ){
+            ws.send("GameOver," + whitePiecesUsername + "," 
+            + blackPiecesUsername + ",loss");
+        }
+        else{
+            ws.send("GameOver," + whitePiecesUsername + "," 
+            + blackPiecesUsername + ",win");
+        }
+        
+
         return `CHECKMATE - WINNER - ${winner}`
     }
     else if (chess.in_draw()) {
@@ -133,7 +206,12 @@ function getGameResult() {
         else if(chess.insufficient_material()){
             reason = 'INSUFFICIENT MATERIAL'
         }
+
+        ws.send("GameOver," + whitePiecesUsername + "," 
+        + blackPiecesUsername + ",tie");
+
         return `DRAW - ${reason}`
+
     }
     else{
         return 'UNKNOWN REASON'

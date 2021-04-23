@@ -14,7 +14,6 @@ export default function BoardSquare({piece, black, position}) {
         accept: 'piece',
         drop: (item) => {
             let arr = item.id.split('_')
-            console.log(item);
             const fromPosition = arr[0];
             handleMove(fromPosition, position)
         },
