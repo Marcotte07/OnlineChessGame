@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
@@ -57,6 +58,37 @@ public class ServerSocket {
 	////
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException {
+//		for (int i = 0; i < 100; ++i) {
+//			opponentSession.get(session).getBasicRemote().sendText("{\"test\":\"num\"}");
+	//	}
+		//message = "{\"test\":\"test\"}";
+		// send the opponent a json file of the move
+		
+		if(message.toLowerCase().contains("gameover")) {
+			String[] csv = message.split(",");
+			String white = csv[1];
+			String black = csv[2];
+			String state = csv[3];
+			
+			try {
+			Query q = new Query();	
+			
+			q.updateElo(white, black);
+			q.updatePlayerGamesPlayed(white, black, state);
+			
+			q.close();
+			}catch (SQLException sqle) {
+				System.out.println("sqle: " + sqle);
+			} catch (ClassNotFoundException cnfe) {
+				System.out.println("cnfe: " + cnfe);
+			}
+			
+		}
+		
+		opponentSession.get(session).getBasicRemote().sendText(message);
+		System.out.println(message);
+		// will leave this for debugging purposes
+
 		
 		// The client is sending USERNAME, send back opponents username!
 		System.out.println(message);
