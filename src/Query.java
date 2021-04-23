@@ -40,10 +40,10 @@ public class Query {
 			conn.close();
 	}
 	
-	Query(String ipAddress, int port) throws SQLException, ClassNotFoundException {
+	Query(String ipAddress, int port, String user, String password) throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conn = DriverManager.getConnection("jdbc:mysql://" + ipAddress + ":"+ port 
-				+ "3306/chess?user=root&password=root");
+				+ "/chess?user=" + user + "&password=" + password);
 	}
 	
 	Query() throws SQLException, ClassNotFoundException {
@@ -462,9 +462,17 @@ public class Query {
 		
 		// authenticate
 		Query q = null;
-		try {  q = new Query(); }
-		catch (SQLException sqle) {
-			
+		try {  
+			q = new Query(
+					"database-1.ct0zvlj1qp3l.us-east-2.rds.amazonaws.com",
+					3306,
+					"admin",
+					"sasouniscool"
+					); 
+			q.autheticate("test", "test");
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe){
 			
 		}
