@@ -22,6 +22,7 @@ public class ServerSocket {
 	private static BlockingQueue<Session> sessionQueue = new LinkedBlockingQueue<Session>(2);
 	private static Map<Session, Session> opponentSession = new ConcurrentHashMap<Session, Session>();
 	private static Map<Session, String> cookieMap = new ConcurrentHashMap<Session, String>();
+	private static Map<Session, String> hasEndedMap = new ConcurrentHashMap<Session, String>();
 	//private static Map<Session, String> color = new ConcurrentHashMap<Session, String>();
 	
 	// decided to make this synchronized because pretty much the entire function is critical section
@@ -58,11 +59,6 @@ public class ServerSocket {
 	////
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException {
-//		for (int i = 0; i < 100; ++i) {
-//			opponentSession.get(session).getBasicRemote().sendText("{\"test\":\"num\"}");
-	//	}
-		//message = "{\"test\":\"test\"}";
-		// send the opponent a json file of the move
 		
 		if(message.toLowerCase().contains("gameover")) {
 			String[] csv = message.split(",");
@@ -77,6 +73,7 @@ public class ServerSocket {
 			q.updatePlayerGamesPlayed(white, black, state);
 			
 			q.close();
+			
 			
 			return;
 			
@@ -115,6 +112,7 @@ public class ServerSocket {
 		
 		// The client is sending MOVE, sent to other client
 		else {
+			System.out.println("Sending move to other client");
 			opponentSession.get(session).getBasicRemote().sendText(message);
 			System.out.println(message);
 		}
@@ -122,27 +120,33 @@ public class ServerSocket {
 	
 	@OnClose
 	public void close(Session session) throws IOException {
-		System.out.println("sdfsdfsdfsdfsdfsdfsdfsdfsdf!");
+		System.out.println("Removing session with username " + cookieMap.get(session));
 		
+		/*
 		// If this session disconnected during a game, it should be an automatic loss
 		if(opponentSession.get(session) != null) {
 			
 			Session opponent = opponentSession.get(session);
 			
-			opponent.getBasicRemote().sendText("YOU WON BY DEFAULT WOOOO");
+			opponent.getBasicRemote().sendText("YOU WON BY DEFAULT");
 			
 			
 			
 			// opponent won, so send message and then update their score
 			System.out.println("opponent disconnected");
-			// opponent.close();
+			
+			
+			opponentSession.remove(opponent);
 		}
 		
+		*/
 		// Check if they were in the queue and remove if so
 		if(sessionQueue.contains(session)) {
 			System.out.println("removing session from queue because disconnected before finding a match");
 			sessionQueue.remove(session);
 		}
+		
+		opponentSession.remove(session);
 		
 	}
 	

@@ -70,7 +70,7 @@ var hasStarted = false;
 // Once cookie works this will be good
 // export var myUsername = document.cookie
     
-export var myUsername = "Test";
+export var myUsername;
 
 var result = null;
 var tmp = [];
@@ -94,6 +94,7 @@ ws.onopen = function(event) {
 var firstText = true;
 ws.onmessage = function(event) {
     
+    console.log("Recieved data from server " + event.data)
     // If they send opponents username and any other info: 
     if(event.data.substring(0, 9) == "username="){
         opponentUsername = event.data.substring(9);
@@ -183,16 +184,21 @@ function getGameResult() {
     if(chess.in_checkmate()) {
         const winner = (chess.turn() === "w") ? 'BLACK' : 'WHITE'
         
-        if(color == 'w' && winner == 'BLACK' ){
+        // Didn't win, so dont call it
+        console.log("My color is " + color + " and the winner is " + winner);
+
+        // Two cases to send info to server, if white and won, or if black and won
+        if(color == 'w' && winner == 'WHITE' ){
+            console.log("sending game over info to server")
             ws.send("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",loss");
+            + blackPiecesUsername + ",win");
         }
-        else{
+        else if(color == 'b' && winner == 'BLACK') {
+            console.log("sending game over info to server")
             ws.send("GameOver," + whitePiecesUsername + "," 
             + blackPiecesUsername + ",win");
         }
         
-
         return `CHECKMATE - WINNER - ${winner}`
     }
     else if (chess.in_draw()) {
@@ -206,9 +212,12 @@ function getGameResult() {
         else if(chess.insufficient_material()){
             reason = 'INSUFFICIENT MATERIAL'
         }
-
-        ws.send("GameOver," + whitePiecesUsername + "," 
-        + blackPiecesUsername + ",tie");
+        
+        // Arbitrarily only have white call this so both clients dont send the same info
+        if(color == 'w'){ 
+            ws.send("GameOver," + whitePiecesUsername + "," 
+            + blackPiecesUsername + ",tie");
+        }
 
         return `DRAW - ${reason}`
 

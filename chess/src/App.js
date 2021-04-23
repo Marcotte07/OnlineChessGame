@@ -29,6 +29,12 @@ function App() {
   return (
     
 <div> 
+  <div> 
+    {result && <button className = "returnButton" 
+    onClick = {goToHomeMenu}> 
+    <h1> MAIN MENU </h1>
+    </button>}
+  </div>
   <div className = "searching">
     {started ? "" : "Searching For Game..."}
   </div>
@@ -37,11 +43,6 @@ function App() {
 
       {isGameOver && (
         <h2 className = "vertical-text"> GAME OVER
-          <button onClick = {goToHomeMenu()}> 
-          <span className = "vertical-text"> 
-            Main Menu
-            </span>
-        </button>
         </h2>
         
       )}
@@ -49,6 +50,7 @@ function App() {
         <div className = "opponentUsernameBox">
           {opponentUsername}
         </div>
+
         <Board board = {board}/>
         <div className = "myUsernameBox">
           {myUsername}
