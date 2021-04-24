@@ -77,12 +77,11 @@ public class ServerSocket {
 			
 			return;
 			
-			}catch (SQLException sqle) {
-				System.out.println("sqle: " + sqle);
+			} catch (SQLException sqle) {
+				sqle.printStackTrace();
 			} catch (ClassNotFoundException cnfe) {
-				System.out.println("cnfe: " + cnfe);
+				cnfe.printStackTrace();
 			}
-			
 		}
 		
 		//opponentSession.get(session).getBasicRemote().sendText(message);
