@@ -3,6 +3,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Chess</title>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script>
 
@@ -145,17 +149,26 @@
 		
 		<div class="elo-formula">
 			<p>In case you are wondering our Elo formulas are as follows: </p>
-			<br>
 			<div class="formulas">
-				<p style="font-size: 18px;">Probability of winning = 1.0 / (1.0 + 10^( (P1 - P2) / 400)))</p>
-				<p style="font-size: 18px;">winning_player_elo_gain = (100/tg) * (1.0 - WPp)</p>
-				<p style="font-size: 18px;">losing_player_elo_loss = (100/tg) * (1.0 - LPp)</p>
+				<p style="font-size: 15px;line-height: 2px;">Assume player 2 has the higher elo</p>
+				<p style="font-size: 15px;line-height: 2px;"> Let  \(p_1 =\) player 1 elo, \(p_2 =\) player 2 elo</p>
+				
+			<!-- 	<p style="font-size: 15px;line-height: 2px;"> Let \(W_{p_1}\) denote the event that player 1 wins</p>-->
+				<p style="font-size: 15px;line-height: 2px;"> Let \(W_{p_2}\) denote the event that player 2 wins</p>
+			
+			
+			<!-- 	<p style="font-size: 18px;">\(P(W_{p_1}) =\frac{1}{1 + 10^{ \frac{p_1 - p_2}{400} }} \)</p>-->
+				<p style="font-size: 18px;">\(P(W_{p_2}) =\frac{1}{1 + 10^{ \frac{p_2 - p_1}{400} }} \)</p>
+				
+				<p style="font-size: 18px;">player 2 elo gain \( = 100 * (1 - P(W_{p_2}))   \)</p>
+				<p style="font-size: 18px;">player 1 player elo loss \( = 100 * (P(W_{p_2}) - 1) \) </p>
+				
+				<!-- 
 				<p style="font-size: 15px;line-height: 2px;">Where:</p>
-				<p style="font-size: 15px;line-height: 2px;">tg = total_games</p>
 				<p style="font-size: 15px;line-height: 2px;">LPp = losing_player_win_probability</p>
 				<p style="font-size: 15px;line-height: 2px;">WPp = winning_player_win_probability</p>
-				<p style="font-size: 15px;line-height: 2px;">P1 = player1_elo</p>
-				<p style="font-size: 15px;line-height: 2px;">P2 = player2_elo</p>
+				<p style="font-size: 15px;line-height: 2px;">\(p_2 =\) player 1 elo</p>
+				<p style="font-size: 15px;line-height: 2px;">\(p_1 =\) player 2 elo</p>-->
 			</div>
 		
 		</div>
