@@ -11,38 +11,37 @@ import java.sql.SQLException;
 public class Login extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	private Query q;
 	
+	public Login() throws IOException, ClassNotFoundException, SQLException {
+		q = new Query();
+	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		System.out.println("Login called");
-		try {
-			Query q = new Query();
-			User user = q.searchUser(request.getParameter("uname"));
-			PrintWriter out = response.getWriter();
+		
+		User user = q.searchUser(request.getParameter("uname"));
+		PrintWriter out = response.getWriter();
+		
+		System.out.println("user: " + request.getParameter("uname") + " || pw: " + request.getParameter("pwd"));
+		if(user != null && user.password.equals(request.getParameter("pwd"))) {
+			int id = user.id;
 			
-			System.out.println("user: " + request.getParameter("uname") + " || pw: " + request.getParameter("pwd"));
-			if(user != null && user.password.equals(request.getParameter("pwd"))) {
-				int id = user.id;
-				
-				Cookie cookie = new Cookie("userid", Integer.toString(id));
-				cookie.setMaxAge(60 * 60 * 2); // (seconds * minutes * hours)
-				response.addCookie(cookie);
-				response.setContentType("text/html");
-				out.print("valid");
-				
-			}else {
-				System.out.println("Inavlid");
-				out.print("invalid");
-			}
+			Cookie cookie = new Cookie("userid", Integer.toString(id));
+			cookie.setMaxAge(60 * 60 * 2); // (seconds * minutes * hours)
+			response.addCookie(cookie);
+			response.setContentType("text/html");
+			out.print("valid");
 			
-			out.flush();
-			out.close();
-		} catch(ClassNotFoundException cnfe) {
-			System.out.println("CNFE: " + cnfe);
-		} catch(SQLException sqle) {
-			System.out.println("SQLE: " + sqle);
+		}else {
+			System.out.println("Inavlid");
+			out.print("invalid");
 		}
+		
+		out.flush();
+		out.close();
+		
 	}
 	
 	

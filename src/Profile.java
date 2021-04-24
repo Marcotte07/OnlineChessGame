@@ -15,120 +15,114 @@ import javax.servlet.http.HttpServletResponse;
 public class Profile extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	private Query q;
 	
+	public Profile() throws IOException, ClassNotFoundException, SQLException {
+		q = new Query();
+	}
+
 	
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	
 		String username = request.getParameter("name");
 		System.out.println("Fetching player data");
 		System.out.println(username);
 		
 		User u = null;
-		try {
-			Query q = new Query();
-			u = q.searchUser(username);
+
+		u = q.searchUser(username);
+		
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		
+		if(u == null) {
+			out.print("none");
+		} else {
+			Vector<Game> games =  q.getPlayerGames(username);
+			//out.println("<a href=\"profile.html?name="+u.username+"\">" + u.username + "</a><br>");
+			out.println("Elo: " +u.elo+"<br>");
+			out.println("num wins:" + u.numWins + "<br>");
+			out.println("num losses:" + u.numLosses + "<br>");
+			out.println("num ties: " + u.numTies + "<br>");
 			
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
+			out.println("<br>Recent Games: <br><br>");
 			
-			if(u == null) {
-				out.print("none");
-			} else {
-				Vector<Game> games =  q.getPlayerGames(username);
-				//out.println("<a href=\"profile.html?name="+u.username+"\">" + u.username + "</a><br>");
-				out.println("Elo: " +u.elo+"<br>");
-				out.println("num wins:" + u.numWins + "<br>");
-				out.println("num losses:" + u.numLosses + "<br>");
-				out.println("num ties: " + u.numTies + "<br>");
-				
-				out.println("<br>Recent Games: <br><br>");
-				
-				out.println("<table style=\"width:50%\">");
+			out.println("<table style=\"width:50%\">");
+			out.println("<tr>");
+			out.println("<th>W/L</th>");
+			out.println("<th>Game</th>");
+			out.println("<th>"+u.username+" Elo</th>");
+			out.println("<th>Opponent Elo</th>");
+			out.println("<th>Game Time</th>");
+			out.println("<th>Date</th>");
+			out.println("</tr>");
+			
+			for(Game g : games) {
 				out.println("<tr>");
-				out.println("<th>W/L</th>");
-				out.println("<th>Game</th>");
-				out.println("<th>"+u.username+" Elo</th>");
-				out.println("<th>Opponent Elo</th>");
-				out.println("<th>Game Time</th>");
-				out.println("<th>Date</th>");
-				out.println("</tr>");
 				
-				for(Game g : games) {
-					out.println("<tr>");
-					
-					String oppUsername = "";
-					
-					//If user was white player
-					if(g.whitePlayerId == u.id) {
-						oppUsername = q.searchUser(g.blackPlayerId).username;
-						//W/L
-						if(g.gameStatus.toLowerCase().equals("win")) {
-							out.println("<th>Win</th>");
-						} else if (g.gameStatus.toLowerCase().equals("loss")){
-							out.println("<th>Loss</th>");
-						} else {
-							out.println("<th>Tie</th>");
-						}
-						
-						//Game
-						out.println("<th><a href=\"profile.html?name=" + username + "\"><span style=\"color:green\">"+username+"</span></a> vs <a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a></th>");
-						
-						//Player Elo
-						out.println("<th>" + g.whitePlayerElo + "</th>");
-						//Opponent Elo
-						out.println("<th>" + g.blackPlayerElo + "</th>");
-					
-					//If user was black player
+				String oppUsername = "";
+				
+				//If user was white player
+				if(g.whitePlayerId == u.id) {
+					oppUsername = q.searchUser(g.blackPlayerId).username;
+					//W/L
+					if(g.gameStatus.toLowerCase().equals("win")) {
+						out.println("<th>Win</th>");
+					} else if (g.gameStatus.toLowerCase().equals("loss")){
+						out.println("<th>Loss</th>");
 					} else {
-						oppUsername = q.searchUser(g.whitePlayerId).username;
-						//W/L
-						if(g.gameStatus.toLowerCase().equals("loss")) {
-							out.println("<th>Win</th>");
-						} else if (g.gameStatus.toLowerCase().equals("win")){
-							out.println("<th>Loss</th>");
-						} else {
-							out.println("<th>Tie</th>");
-						}
-						
-						//Game
-						out.println("<th><a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a> vs <a href=\"profile.html?name=" + username + "\"><span style=\"color:green\"> "+username+ "</a></span></th>");
-						
-						//Player Elo
-						out.println("<th>" + g.blackPlayerElo + "</th>");
-						//Opponent Elo
-						out.println("<th>" + g.whitePlayerElo + "</th>");
+						out.println("<th>Tie</th>");
 					}
 					
-					SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd"); 
-					SimpleDateFormat time_formatter = new SimpleDateFormat("mm:ss"); 
-					Date start = g.startTime;
-					Date end = g.endTime;
+					//Game
+					out.println("<th><a href=\"profile.html?name=" + username + "\"><span style=\"color:green\">"+username+"</span></a> vs <a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a></th>");
 					
-					long diff_time = end.getTime()-start.getTime();
-					
-		            
-		            Date tmp = new Date(diff_time);
-					//Game time
-		            out.println("<th>" + time_formatter.format(diff_time) + "</th>");
-					
-					//Date
-		            out.println("<th>" + g.startDate + "</th>");
-					out.println("</tr>");
-				}
-			}
+					//Player Elo
+					out.println("<th>" + g.whitePlayerElo + "</th>");
+					//Opponent Elo
+					out.println("<th>" + g.blackPlayerElo + "</th>");
 				
-			out.flush();
-			out.close();
-			q.close();
-			
-		} catch(SQLException sqle) {
-			System.out.println("Leaderboards sqle: " + sqle);
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println("Class not found exceptoion in leaderboards: " + cnfe);
+				//If user was black player
+				} else {
+					oppUsername = q.searchUser(g.whitePlayerId).username;
+					//W/L
+					if(g.gameStatus.toLowerCase().equals("loss")) {
+						out.println("<th>Win</th>");
+					} else if (g.gameStatus.toLowerCase().equals("win")){
+						out.println("<th>Loss</th>");
+					} else {
+						out.println("<th>Tie</th>");
+					}
+					
+					//Game
+					out.println("<th><a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a> vs <a href=\"profile.html?name=" + username + "\"><span style=\"color:green\"> "+username+ "</a></span></th>");
+					
+					//Player Elo
+					out.println("<th>" + g.blackPlayerElo + "</th>");
+					//Opponent Elo
+					out.println("<th>" + g.whitePlayerElo + "</th>");
+				}
+				
+				SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+				SimpleDateFormat time_formatter = new SimpleDateFormat("mm:ss"); 
+				Date start = g.startTime;
+				Date end = g.endTime;
+				
+				long diff_time = end.getTime()-start.getTime();
+				
+	            
+	            Date tmp = new Date(diff_time);
+				//Game time
+	            out.println("<th>" + time_formatter.format(diff_time) + "</th>");
+				
+				//Date
+	            out.println("<th>" + g.startDate + "</th>");
+				out.println("</tr>");
+			}
 		}
-		
+			
+		out.flush();
+		out.close();
 
-		
-		
 	}
 }

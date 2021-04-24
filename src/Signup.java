@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 public class Signup extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
+	private Query q;
 	
+	public Signup() throws IOException, ClassNotFoundException, SQLException {
+		q = new Query();
+	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("signup");
@@ -22,31 +26,24 @@ public class Signup extends HttpServlet{
 		String fName = request.getParameter("first_name");
 		String lName = request.getParameter("last_name");
 		
-		try {
-			Query q = new Query();
-			
-			User uEmail = q.searchUser("email",email);
-			User uUname = q.searchUser(uname);
-			
-			
-			System.out.println("Signup Username id: " + uUname);
-			System.out.println("Signup Email id: " + uEmail);
-			
-			PrintWriter out = response.getWriter();
-			
-			if (uUname != null) {
-				out.print("username_taken");
-			} else if(uEmail != null) {
-				out.print("email_taken");
-			} else {
-				q.createAccount(uname, email, pwd, fName, lName);
-				out.print("valid");
-			}
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println("CNFE: "+cnfe);
-		} catch (SQLException sqle) {
-			System.out.println("SQLE: " + sqle);
+		User uEmail = q.searchUser("email",email);
+		User uUname = q.searchUser(uname);
+		
+		
+		System.out.println("Signup Username id: " + uUname);
+		System.out.println("Signup Email id: " + uEmail);
+		
+		PrintWriter out = response.getWriter();
+		
+		if (uUname != null) {
+			out.print("username_taken");
+		} else if(uEmail != null) {
+			out.print("email_taken");
+		} else {
+			q.createAccount(uname, email, pwd, fName, lName);
+			out.print("valid");
 		}
+	
 		
 	}
 	

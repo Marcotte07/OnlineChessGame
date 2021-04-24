@@ -25,6 +25,13 @@ public class ServerSocket {
 	private static Map<Session, String> hasEndedMap = new ConcurrentHashMap<Session, String>();
 	//private static Map<Session, String> color = new ConcurrentHashMap<Session, String>();
 	
+	private Query q;
+	
+	public ServerSocket() throws IOException, ClassNotFoundException, SQLException {
+		q = new Query();
+	}
+	
+	
 	// decided to make this synchronized because pretty much the entire function is critical section
 	@OnOpen
 	public synchronized void open(Session session) throws IOException {
@@ -66,22 +73,9 @@ public class ServerSocket {
 			String black = csv[2];
 			String state = csv[3];
 			
-			try {
-			Query q = new Query();	
-			
 			q.updateElo(white, black);
 			q.updatePlayerGamesPlayed(white, black, state);
-			
-			q.close();
-			
-			
 			return;
-			
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-			} catch (ClassNotFoundException cnfe) {
-				cnfe.printStackTrace();
-			}
 		}
 		
 		//opponentSession.get(session).getBasicRemote().sendText(message);
