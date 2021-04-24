@@ -219,6 +219,8 @@ public class Query {
 		}
 	}
 	public User searchUser(int id) {
+		
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -315,6 +317,7 @@ public class Query {
 		}
 	}
 	
+		
 	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, String whiteGameState) {
 		
 		User white = searchUser(whitePlayerUsername);
@@ -322,49 +325,65 @@ public class Query {
 		
 		PreparedStatement ps = null;
 		PreparedStatement ps2 = null;
-		try {
+		PreparedStatement gu = null;
+		String winOrLoss = "";
+		try {		
 			
 			if(whiteGameState.toLowerCase().equals("win")) {
-				
+				winOrLoss = "win";
 				if(white != null) {
-					ps = conn.prepareStatement("UPDATE user SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, white.id);
 					ps.executeUpdate();
 				}
 				
 				if(black != null) {
-					ps2 = conn.prepareStatement("UPDATE user SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, black.id);
 					ps2.executeUpdate();
 				}
 				
 
 			} else if (whiteGameState.toLowerCase().equals("loss")) {
+				winOrLoss = "loss";
 				if(black != null) {
-					ps = conn.prepareStatement("UPDATE user SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, black.id);
 					ps.executeUpdate();
 				}
 				
 				if(white != null ) {
-					ps2 = conn.prepareStatement("UPDATE user SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, white.id);
 					ps2.executeUpdate();
 				}
 			} else {
+				winOrLoss = "tie";
 				if(black != null) {
-					ps = conn.prepareStatement("UPDATE user SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, black.id);
 					ps.executeUpdate();
 				}
 		
 				if(white != null) {
-					ps2 = conn.prepareStatement("UPDATE user SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, white.id);
 					ps2.executeUpdate();
 				}
 			
 			}
+			
+			//Create a new entry for the game played in the game table of the DB
+			gu =  conn.prepareStatement("INSERT INTO game(white_player_id, black_player_id, "
+					+ "game_status, start_time, end_time, white_player_elo, black_player_elo) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+			gu.setInt(1, white.id);
+			gu.setInt(2, black.id);
+			gu.setString(3, winOrLoss);
+			gu.setString(4, new Date().toString());
+			gu.setString(5, new Date().toString());
+			gu.setInt(6, white.elo);
+			gu.setInt(7, white.elo);
 			
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -400,16 +419,16 @@ public class Query {
 		try {
 			
 			if(winner != null) {
-				ps = conn.prepareStatement("UPDATE user SET elo=elo+? WHERE user_id=?;");
+				ps = conn.prepareStatement("UPDATE User SET elo=elo+? WHERE user_id=?;");
 				ps.setInt(1, winningPlayerNewElo);
 				ps.setInt(2, winner.id);
 				ps.executeUpdate();
 			}
 			
 			if(loser != null) {
-				ps2 = conn.prepareStatement("UPDATE user SET elo=elo+? WHERE user_id=?;");
+				ps2 = conn.prepareStatement("UPDATE User SET elo=elo+? WHERE user_id=?;");
 				ps2.setInt(1, losingPlayerNewElo);
-				ps2.setInt(3, loser.id);
+				ps2.setInt(2, loser.id);
 				ps2.executeUpdate();
 			}
 
@@ -432,7 +451,7 @@ public class Query {
 		PreparedStatement ps = null;
 		try {
 			ps = conn.prepareStatement("INSERT INTO \n"
-					+ "user(username, email, password, firstname, lastname, date_created, elo, num_wins, num_losses,\n"
+					+ "User(username, email, password, firstname, lastname, date_created, elo, num_wins, num_losses,\n"
 					+ "num_ties, num_games) \n"
 					+ "VALUES\n"
 					+ "(?, ?, ?, ?, ?, ?, 1000, 0, 0, 0, 0)");
