@@ -60,7 +60,7 @@ export function handleMove(from, to) {
 console.log(document.cookie);
 
 // document.cookie = "username=Marcotte07";
-var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+var ws = new WebSocket("ws://ec2-13-58-104-183.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint");
 
 export var color = 'b';
 
