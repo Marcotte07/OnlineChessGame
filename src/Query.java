@@ -483,9 +483,13 @@ public class Query {
 		// authenticate
 		Query q = null;
 		try {  
+			
 			q = new Query(); 
-			q.autheticate("test", "test");
-
+			
+			Long start = System.currentTimeMillis();
+			q.getTopPlayers(10);
+			Long end = System.currentTimeMillis();
+			System.out.println(end-start);
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 		} catch (ClassNotFoundException cnfe){
