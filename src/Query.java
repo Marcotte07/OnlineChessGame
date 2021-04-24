@@ -140,7 +140,8 @@ public class Query {
 			int id = player.id;
 			try {
 				//TODO: Finish get player games function
-				String query = "SELECT * FROM game a WHERE white_player_id=? or black_player_id=? ORDER BY game_id DESC";
+				String query = "SELECT * FROM Game WHERE white_player_id=? or black_player_id=? ORDER BY game_id DESC";
+				System.out.println(query +" | " + id);
 				ps = conn.prepareStatement(query);
 				ps.setInt(1, id);
 				ps.setInt(2, id);
@@ -319,7 +320,7 @@ public class Query {
 	
 		
 	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, String whiteGameState) {
-		
+		System.out.println("updatePlayerGamesPlayed");
 		User white = searchUser(whitePlayerUsername);
 		User black = searchUser(blackPlayerUsername);
 		
@@ -374,16 +375,23 @@ public class Query {
 			}
 			
 			//Create a new entry for the game played in the game table of the DB
-			gu =  conn.prepareStatement("INSERT INTO game(white_player_id, black_player_id, "
+			System.out.println(String.format("INSERT INTO Game(white_player_id, black_player_id, game_status, "
+					+ "start_time, end_time, white_player_elo, black_player_elo) "
+					+ "VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+					white.id,black.id,winOrLoss,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),white.elo,black.elo));
+			
+			
+			gu =  conn.prepareStatement("INSERT INTO Game(white_player_id, black_player_id, "
 					+ "game_status, start_time, end_time, white_player_elo, black_player_elo) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
 			gu.setInt(1, white.id);
 			gu.setInt(2, black.id);
 			gu.setString(3, winOrLoss);
-			gu.setString(4, new Date().toString());
-			gu.setString(5, new Date().toString());
+			gu.setString(4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			gu.setString(5, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			gu.setInt(6, white.elo);
-			gu.setInt(7, white.elo);
+			gu.setInt(7, black.elo);
+			gu.executeUpdate();
 			
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
@@ -391,6 +399,7 @@ public class Query {
 			try {
 				if (ps != null) ps.close();
 				if (ps2 != null) ps.close();
+				if(gu != null) gu.close();
 			} catch (SQLException sqle2) {
 				sqle2.printStackTrace();
 			}

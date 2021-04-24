@@ -42,6 +42,7 @@ public class Signup extends HttpServlet{
 				q.createAccount(uname, email, pwd, fName, lName);
 				out.print("valid");
 			}
+			q.close();
 		} catch (ClassNotFoundException cnfe) {
 			System.out.println("CNFE: "+cnfe);
 		} catch (SQLException sqle) {

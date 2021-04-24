@@ -61,6 +61,7 @@ public class ServerSocket {
 	public void onMessage(String message, Session session) throws IOException {
 		
 		if(message.toLowerCase().contains("gameover")) {
+			System.out.println("GameOverMessage: " + message);
 			String[] csv = message.split(",");
 			String white = csv[1];
 			String black = csv[2];
@@ -73,8 +74,6 @@ public class ServerSocket {
 			q.updatePlayerGamesPlayed(white, black, state);
 			
 			q.close();
-			
-			
 			return;
 			
 			}catch (SQLException sqle) {
