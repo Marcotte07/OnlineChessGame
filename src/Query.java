@@ -139,7 +139,6 @@ public class Query {
 			User player = searchUser(username);
 			int id = player.id;
 			try {
-				//TODO: Finish get player games function
 				String query = "SELECT * FROM Game WHERE white_player_id=? or black_player_id=? ORDER BY game_id DESC";
 				System.out.println(query +" | " + id);
 				ps = conn.prepareStatement(query);
@@ -219,6 +218,7 @@ public class Query {
 			}
 		}
 	}
+	
 	public User searchUser(int id) {
 		
 		
@@ -236,9 +236,7 @@ public class Query {
 			if (!rs.next())  {
 				return null;
 			}
-				
-			System.out.print("returning user");
-			
+							
 			return new User(
 					rs.getInt("user_id"),
 					rs.getString("username"),
@@ -259,13 +257,6 @@ public class Query {
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			return null;
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (ps != null) ps.close();
-			} catch (SQLException sqle2) {
-				sqle2.printStackTrace();
-			}
 		}
 	}
 	

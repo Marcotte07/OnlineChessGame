@@ -74,8 +74,9 @@ public class ServerSocket {
 			String black = csv[2];
 			String state = csv[3];
 			
-			q.updateElo(white, black);
 			q.updatePlayerGamesPlayed(white, black, state);
+			q.updateElo(white, black);
+			
 			return;
 		}
 		

@@ -3,7 +3,14 @@
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <script>
 	
+	function setupNavbar() {
+		var username = checkLoginStatus();
+		showProfilePage(username);
+		showPlayContent(username);
+		selectedcss(username);
+	}
 	//Change the 'login' to reflect if the user is signed in or not
+	
 	function checkLoginStatus() {
 	    var xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open( "GET", "GetLoginCookie", false );
@@ -30,7 +37,6 @@
 	    	logout();
 	    	document.getElementById("login").href = "index.html";
 	    }
-	    return xmlHttp.responseText;
 	}
 	
 	//Log the user out
@@ -42,7 +48,7 @@
 	}
 	
 	
-	function selectedcss() {
+	function selectedcss(username) {
 		var fullpathname = window.location.pathname;
 		var filename = fullpathname.replace(/^.*[\\\/]/, '');
 		var css = "padding: 8px 3px;border: 3px solid #fff;border-radius: 10px;"
@@ -60,10 +66,10 @@
 	}
 	
 	//Show or hide the profile page
-	function showProfilePage() {
-		
-		if(checkLoginStatus() != "none") {
-	    	document.getElementById("Profile").innerHTML= "<a href=\"profile.html?name="+checkLoginStatus()+"\">Profile</a>";
+	function showProfilePage(username) {
+		if(username != "none") {
+	    	document.getElementById("Profile").innerHTML= "<a href=\"profile.html?name="+
+	    	username+"\">Profile</a>";
 		} else {
 	    	document.getElementById("Profile").innerHTML= "";
 	    	document.getElementById("login").href = "";		
@@ -71,18 +77,19 @@
 		
 	}
 	
-	function showPlayContent() {
-		if(checkLoginStatus() != "none") {
+	function showPlayContent(username) {
+		if(username != "none") {
 			// I (Nick) am changing this line to redirect to localhost 3000
 			// I (Sasoun) am changing this line to redirect to build/index.html
-	    	document.getElementById("Play").innerHTML=  "<a style=\"color: #000; text-decoration: none;\"href=\"build/index.html?name="+checkLoginStatus()+"\">PLAY (" + checkLoginStatus() + ")</a>";
+	    	document.getElementById("Play").innerHTML=  "<a style=\"color: #000; " + 
+	    	"text-decoration: none;\"href=\"build/index.html?name="+username+"\">PLAY (" + username + ")</a>";
 		} else {
-			document.getElementById("Play").innerHTML= "<a style=\"color: #000; text-decoration: none;\" href=\"build/index.html?name="+ "Guest"+"\">PLAY (" + "Guest" + ")</a>";
+			document.getElementById("Play").innerHTML= "<a style=\"color: #000; "+ 
+			"text-decoration: none;\" href=\"build/index.html?name="+ "Guest"+"\">PLAY (" + 
+			"Guest" + ")</a>";
 		}
 	}
 	
-
-
 </script>
 
 <style>
@@ -129,11 +136,7 @@
 
 </style>
 
-	
-	<script>checkLoginStatus();</script>
-	<script>showProfilePage();</script>
-	<script>showPlayContent();</script>
-	<script>selectedcss();</script>
+	<script>setupNavbar();</script>
 	
 	<style id="custom-selected"></style>
 	
