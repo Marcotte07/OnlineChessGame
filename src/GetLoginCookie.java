@@ -14,6 +14,11 @@ public class GetLoginCookie extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	
+	private Query q;
+	
+	public GetLoginCookie() throws IOException, ClassNotFoundException, SQLException {
+		q = new Query();
+	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
@@ -38,16 +43,8 @@ public class GetLoginCookie extends HttpServlet{
       	if(!found) {
       		out.print("none");
   		} else {
-  			try {
-	  			Query q = new Query();
-	  			User u = q.searchUser(Integer.parseInt(value));
-	  			out.print(u.username);
-	  			q.close();
-  			} catch (SQLException sqle) {
-  				System.out.println("sqle: " + sqle);
-  			} catch (ClassNotFoundException cnfe) {
-  				System.out.println("cnfe: " + cnfe);
-  			}
+  			User u = q.searchUser(Integer.parseInt(value));
+  			out.print(u.username);
 		}
       	out.flush();
       	out.close();
