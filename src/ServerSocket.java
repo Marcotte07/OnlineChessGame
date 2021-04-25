@@ -73,11 +73,15 @@ public class ServerSocket {
 			String white = csv[1];
 			String black = csv[2];
 			String state = csv[3];
+			long time = Long.parseLong(csv[4]);
 			
-			q.updatePlayerGamesPlayed(white, black, state);
 			
-			if(!state.toLowerCase().equals("tie")) {
+			q.updatePlayerGamesPlayed(white, black, state, time);
+			
+			if(!state.toLowerCase().equals("win")) {
 				q.updateElo(white, black);
+			} else if(!state.toLowerCase().equals("loss")) {
+				q.updateElo(black, white);
 			}
 			
 			return;

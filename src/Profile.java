@@ -70,8 +70,9 @@ public class Profile extends HttpServlet{
 			out.println("<th>Game</th>");
 			out.println("<th>"+u.username+" Elo</th>");
 			out.println("<th>Opponent Elo</th>");
-			out.println("<th>Game Time</th>");
+			out.println("<th>Game Length</th>");
 			out.println("<th>Date</th>");
+			out.println("<th>Time</th>");
 			out.println("</tr>");
 			
 			//yes im that lazy:
@@ -156,6 +157,7 @@ public class Profile extends HttpServlet{
 				
 				//Date
 	            out.println("<th>" + g.startDate + "</th>");
+	            out.println("<th>" + g.startTime + "</th>");
 				out.println("</tr>");
 			}
 		}

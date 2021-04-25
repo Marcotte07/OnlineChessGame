@@ -320,7 +320,8 @@ public class Query {
 	}
 	
 		
-	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, String whiteGameState) {
+	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, 
+										String whiteGameState, long timeDiff) {
 		System.out.println("updatePlayerGamesPlayed: " + whiteGameState);
 		User white = searchUser(whitePlayerUsername);
 		User black = searchUser(blackPlayerUsername);
@@ -334,13 +335,15 @@ public class Query {
 			if(whiteGameState.toLowerCase().equals("win")) {
 				winOrLoss = "win";
 				if(white != null) {
-					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, white.id);
 					ps.executeUpdate();
 				}
 				
 				if(black != null) {
-					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, black.id);
 					ps2.executeUpdate();
 				}
@@ -349,37 +352,48 @@ public class Query {
 			} else if (whiteGameState.toLowerCase().equals("loss")) {
 				winOrLoss = "loss";
 				if(black != null) {
-					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_wins=num_wins+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, black.id);
 					ps.executeUpdate();
 				}
 				
 				if(white != null ) {
-					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_losses=num_losses+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, white.id);
 					ps2.executeUpdate();
 				}
 			} else {
 				winOrLoss = "tie";
 				if(black != null) {
-					ps = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps.setInt(1, black.id);
 					ps.executeUpdate();
 				}
 		
 				if(white != null) {
-					ps2 = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, num_games=num_games+1 WHERE user_id=?;");
+					ps2 = conn.prepareStatement("UPDATE User SET num_ties=num_ties+1, "
+							+ "num_games=num_games+1 WHERE user_id=?;");
 					ps2.setInt(1, white.id);
 					ps2.executeUpdate();
 				}
 			
 			}
 			
+			SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			Long timeNow = new Date().getTime();
+			
+			Long timeAtStart = timeNow - timeDiff;
+			
+			
 			//Create a new entry for the game played in the game table of the DB
-			System.out.println(String.format("INSERT INTO Game(white_player_id, black_player_id, game_status, "
-					+ "start_time, end_time, white_player_elo, black_player_elo) "
+			System.out.println(String.format("INSERT INTO Game(white_player_id, black_player_id, "
+					+ "game_status, start_time, end_time, white_player_elo, black_player_elo) "
 					+ "VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-					white.id,black.id,winOrLoss,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),white.elo,black.elo));
+					white.id,black.id,winOrLoss,dateSdf.format(timeAtStart),dateSdf.format(timeNow),white.elo,black.elo));
 			
 			
 			gu =  conn.prepareStatement("INSERT INTO Game(white_player_id, black_player_id, "
@@ -388,8 +402,8 @@ public class Query {
 			gu.setInt(1, white.id);
 			gu.setInt(2, black.id);
 			gu.setString(3, winOrLoss);
-			gu.setString(4, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-			gu.setString(5, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			gu.setString(4, dateSdf.format(timeAtStart));
+			gu.setString(5, dateSdf.format(timeNow));
 			gu.setInt(6, white.elo);
 			gu.setInt(7, black.elo);
 			gu.executeUpdate();
