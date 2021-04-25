@@ -7,26 +7,6 @@ import PromotionChoice from './PromotionChoice'
 const chess = new Chess();
 
 
-
-function parseURLParams(url) {
-    var queryStart = url.indexOf("?") + 1,
-        queryEnd   = url.indexOf("#") + 1 || url.length + 1,
-        query = url.slice(queryStart, queryEnd - 1),
-        pairs = query.replace(/\+/g, " ").split("&"),
-        parms = {}, i, n, v, nv;
-
-    if (query === url || query === "") return;
-
-    for (i = 0; i < pairs.length; i++) {
-        nv = pairs[i].split("=", 2);
-        n = decodeURIComponent(nv[0]);
-        v = decodeURIComponent(nv[1]);
-
-        if (!parms.hasOwnProperty(n)) parms[n] = [];
-        parms[n].push(nv.length === 2 ? v : null);
-    }
-    return parms;
-}
 export const gameSubject = new BehaviorSubject({
     board: chess.board
 })
@@ -57,10 +37,8 @@ export function handleMove(from, to) {
     }
 }
 
-console.log(document.cookie);
-
-var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
-//var ws = new WebSocket("ws://ec2-13-58-104-183.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint");
+//var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+var ws = new WebSocket("ws://ec2-13-58-104-183.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint");
 
 export var color = 'b';
 
@@ -82,7 +60,6 @@ window.location.search
   if (tmp[0] === "name") result = decodeURIComponent(tmp[1]);
 });
 
-console.log("result is" + result);
 myUsername = result;
 
 export var opponentUsername = "Waiting For Player To Connect";
@@ -92,13 +69,19 @@ ws.onopen = function(event) {
     ws.send("username="+myUsername);
 }
 var firstText = true;
+let gameTime = 0;
+
+function incrementTimer(){
+    gameTime += 1;
+}
 ws.onmessage = function(event) {
     
     console.log("Recieved data from server " + event.data)
     // If they send opponents username and any other info: 
     if(event.data.substring(0, 9) == "username="){
         opponentUsername = event.data.substring(9);
-        console.log("Player Connected, opponent username is game.js is: " + opponentUsername);
+        // This is when game timer should start, as opponent connected
+        window.setInterval(incrementTimer, 1000)
         updateGame();
     }
     
@@ -185,18 +168,14 @@ function getGameResult() {
         const winner = (chess.turn() === "w") ? 'BLACK' : 'WHITE'
         
         // Didn't win, so dont call it
-        console.log("My color is " + color + " and the winner is " + winner);
-
         // Two cases to send info to server, if white and won, or if black and won
         if(color == 'w' && winner == 'WHITE' ){
-            console.log("sending game over info to server")
             ws.send("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",win");
+            + blackPiecesUsername + ",win," + gameTime);
         }
         else if(color == 'b' && winner == 'BLACK') {
-            console.log("sending game over info to server")
             ws.send("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",win");
+            + blackPiecesUsername + ",win," + gameTime);
         }
         
         return `CHECKMATE - WINNER - ${winner}`
@@ -215,11 +194,8 @@ function getGameResult() {
         
         // Arbitrarily only have white call this so both clients dont send the same info
         if(color == 'w'){ 
-            console.log("Sending tie data")
-            console.log("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",tie");
             ws.send("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",tie");
+            + blackPiecesUsername + ",tie," +gameTime);
         }
 
         return `DRAW - ${reason}`

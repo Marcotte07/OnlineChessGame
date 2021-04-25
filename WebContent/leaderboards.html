@@ -67,6 +67,7 @@
 	#content {
 	   color: #FFF;
 	   font-size: 24px;
+	   height: 100%;
 	}
 	
 	th {
@@ -79,8 +80,11 @@
 	}
 	
 	.leaderboards-description {
-	  float: left;
-	  width: 65%;
+	  align-items: center;
+  	  justify-content: center;
+  	  display: flex;
+  	  text-align: center;
+  	  margin-bottom: 0px;
 	}
 	
 	.top-desc {
@@ -88,10 +92,13 @@
 	  padding: 15px;
 	}
 	
-	.total-players {
-	  float: right;
-	  width: 25%;
+	.content {
+		width: 100%;
+		height: 100%;
+		margin-bottom: 100px;
 	}
+	
+	
 	
 	
 </style>
@@ -109,19 +116,16 @@
 		<br>
 		
 		<div class="leaderboards-description">
-			<p>The leaderboards shows the top 10 players who have accounts. This rating is based on each player's Elo score.</p>
-		</div>
-		
-		<div class="total-players">
-			<br><br>
 			<span id="total-players">Total Players: 0</span>
 		</div>
+		
+		
 	</div>
 	
 	<br><br><br><br><br><br>
 	
 	<script>getLeaderboards()</script>
-	<div id="content" style="width: 100%"></div>
+	<div id="content" class = "content"></div>
 
 </body>
 </html>
