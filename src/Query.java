@@ -455,6 +455,39 @@ public class Query {
 		
         
 	}
+	
+	
+	public int getTotalPlayers() {
+		System.out.println("SELECT COUNT(user_id) FROM User");
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			
+			ps = conn.prepareStatement("SELECT COUNT(user_id) FROM User;");
+			rs = ps.executeQuery();
+			
+			// check invalid username
+			if (!rs.next())  {
+				return -1;
+			}
+			
+			return rs.getInt("COUNT(user_id)");
+		
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
+		}
+	}
+	
+	
 	public void createAccount(String username, String email, String password, 
 							  String firstname, String lastname)
 	{

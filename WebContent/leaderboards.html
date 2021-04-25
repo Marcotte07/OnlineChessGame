@@ -25,6 +25,20 @@
 		    xmlHttp.send();
 		}	
 	
+		function getTotalPlayers() {
+			var xmlHttp = new XMLHttpRequest();
+	    	xmlHttp.open("GET", "TotalPlayers", true );
+		    xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		    xmlHttp.onreadystatechange = function() {
+		    	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+		    		if (xmlHttp.responseText) {
+				    	document.getElementById('total-players').innerHTML = "Total Players: " + this.responseText;
+		    		}
+		    	}
+		    }
+		    xmlHttp.send();
+		}
+		
 	</script>
 	
 <style>
@@ -36,10 +50,17 @@
 	}
 	
 	h1 {
+		font-size: 50px;
 	   color: #FFF; 
 	}
 	
 	p {
+	   font-size: 24px;
+	   color: #FFF;
+	}
+	
+	span {
+	   font-size: 24px;
 	   color: #FFF;
 	}
 	
@@ -57,6 +78,22 @@
    		border-collapse: separate;
 	}
 	
+	.leaderboards-description {
+	  float: left;
+	  width: 65%;
+	}
+	
+	.top-desc {
+	  margin-left: 5%;
+	  padding: 15px;
+	}
+	
+	.total-players {
+	  float: right;
+	  width: 25%;
+	}
+	
+	
 </style>
 </head>
 
@@ -64,6 +101,25 @@
 
 	<div id="nav-bar"></div>
 	<br><br>
+	
+	<script>getTotalPlayers()</script>
+	
+	<div class="top-desc">
+		<h1 style="margin: auto; width: 45%; text-align: center;">Leaderboards</h1>
+		<br>
+		
+		<div class="leaderboards-description">
+			<p>The leaderboards shows the top 10 players who have accounts. This rating is based on each player's Elo score.</p>
+		</div>
+		
+		<div class="total-players">
+			<br><br>
+			<span id="total-players">Total Players: 0</span>
+		</div>
+	</div>
+	
+	<br><br><br><br><br><br><br><br>
+	
 	<script>getLeaderboards()</script>
 	<div id="content" style="width: 100%"></div>
 
