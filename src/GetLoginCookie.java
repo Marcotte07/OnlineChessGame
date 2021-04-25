@@ -50,6 +50,7 @@ public class GetLoginCookie extends HttpServlet{
       	out.close();
 	}
 	
+	
 	public void destroy() {
 		try {
 			q.close();

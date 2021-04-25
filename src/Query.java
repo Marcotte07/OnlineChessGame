@@ -257,6 +257,13 @@ public class Query {
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
 			return null;
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (ps != null) ps.close();
+			} catch (SQLException sqle2) {
+				sqle2.printStackTrace();
+			}
 		}
 	}
 	
@@ -311,7 +318,7 @@ public class Query {
 	
 		
 	public void updatePlayerGamesPlayed(String whitePlayerUsername, String blackPlayerUsername, String whiteGameState) {
-		System.out.println("updatePlayerGamesPlayed");
+		System.out.println("updatePlayerGamesPlayed: " + whiteGameState);
 		User white = searchUser(whitePlayerUsername);
 		User black = searchUser(blackPlayerUsername);
 		
