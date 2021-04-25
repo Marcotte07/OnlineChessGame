@@ -30,7 +30,7 @@ public class Leaderboards extends HttpServlet{
 		PrintWriter out = response.getWriter();
 		
 				
-		out.println("<table style=\"width:30%\">");
+		out.println("<table style=\"width:70%;margin: 0 auto;\">");
 		out.println("<tr>");
 		out.println("<th>Rank</th>");
 		out.println("<th>Username</th>");
@@ -43,19 +43,25 @@ public class Leaderboards extends HttpServlet{
 		int place = 1;
 		for(User u : users) {
 			//<a href="url">link text</a>
-			out.println("<tr>");
+			if (place % 2 == 0)
+				out.println("<tr style=\"background: grey; color:black\">");
+			else 
+				out.println("<tr style=\"background: linen; color: black\">");
+ 
 			out.println("<th>" + place + "</th>");
-			out.println("<th><a href=\"profile.html?name="+u.username+"\">" + u.username + "</a></th>");
+			out.println("<th><a style=\"color:" + (place%2==0?"black":"black")+ "\" href=\"profile.html?name="+u.username+"\">" + u.username + "</a></th>");
 			out.println("<th>" + u.elo + "</th>");
 			out.println("<th>" + u.numWins + "</th>");
 			out.println("<th>" + u.numLosses + "</th>");
 			out.println("<th>" + u.numTies + "</th>");
 			out.println("</tr>");
-			
+
 			place++;
 		}
 		out.println("</table>");
 		out.close();
+		
+		System.out.println("diff"); 
 		
 		
 
