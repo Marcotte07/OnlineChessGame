@@ -107,6 +107,7 @@ public class ServerSocket {
 		
 		// The client is sending MOVE, sent to other client
 		else {
+			
 			System.out.println("Sending move to other client");
 			opponentSession.get(session).getBasicRemote().sendText(message);
 			System.out.println(message);
@@ -143,18 +144,22 @@ public class ServerSocket {
 		
 		opponentSession.remove(session);
 		
+		/*
 		System.out.println("onclose deallocate");
 		if (q != null)
 			q.close();
+			*/
 	}
 	
 	@OnError
 	public void error(Throwable error) throws SQLException {		
 		error.printStackTrace();
 		
+		/*
 		System.out.println("onerror deallocate");
 		if (q != null)
 			q.close();
+			*/
 	}
 	
 
