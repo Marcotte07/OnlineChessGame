@@ -144,8 +144,8 @@ public class ServerSocket {
 		opponentSession.remove(session);
 		
 		System.out.println("onclose deallocate");
-		if (q != null)
-			q.close();
+	//	if (q != null)
+//			q.close();
 	}
 	
 	@OnError
@@ -153,8 +153,8 @@ public class ServerSocket {
 		error.printStackTrace();
 		
 		System.out.println("onerror deallocate");
-		if (q != null)
-			q.close();
+	//	if (q != null)
+		//	q.close();
 	}
 	
 

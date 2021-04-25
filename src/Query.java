@@ -32,7 +32,7 @@ import java.util.Date;
  * .close(), or else you WILL get a resource leak!
  */
 public class Query {
-	private Connection conn;
+	private static Connection conn;
 	
 	// DO NOT FORGE TO CALL .CLOSE()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public void close() throws SQLException {
@@ -48,8 +48,11 @@ public class Query {
 	
 	Query() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		conn = DriverManager.getConnection("jdbc:mysql://" + IP_ADDRESS_DB + ":"+ PORT_DB 
-				+ "/chess?user=" + USERNAME_DB + "&password=" + PASSWORD_DB);
+		
+		if (conn == null) {
+			conn = DriverManager.getConnection("jdbc:mysql://" + IP_ADDRESS_DB + ":"+ PORT_DB 
+					+ "/chess?user=" + USERNAME_DB + "&password=" + PASSWORD_DB);
+		}
 	}
 
 	

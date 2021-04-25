@@ -126,11 +126,5 @@ public class Profile extends HttpServlet{
 
 	}
 	
-	public void destroy() {
-		try {
-			q.close();
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-		}
-	}
+
 }

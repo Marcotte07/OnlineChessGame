@@ -64,11 +64,5 @@ public class Leaderboards extends HttpServlet{
 		System.out.println("diff"); 	
 	}
 	
-	public void destroy() {
-		try {
-			q.close();
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-		}
-	}
+
 }
