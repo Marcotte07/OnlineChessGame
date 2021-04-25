@@ -413,9 +413,17 @@ public class Query {
 		User winner = searchUser(winningPlayersUsername);
 		User loser = searchUser(LosingPlayersUsername);
 		
-		int wElo = winner.elo;
-		int lElo = loser.elo;
+		int wElo = 1000;
+		int lElo = 1000;
 		
+		if(winner != null) {
+			 wElo = winner.elo;
+		}
+		
+		if(loser != null ) {
+			lElo = loser.elo;
+		}
+
 		Double winningProbability =  1.0 / (1.0 + Math.pow(10.0,(lElo*1.0 - wElo*1.0)/400.0));
 		//Double losingProbability = 1.0 / (1.0 + Math.pow(10.0,(wElo*1.0 - lElo*1.0)/400.0));
 		

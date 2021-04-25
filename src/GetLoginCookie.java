@@ -49,7 +49,4 @@ public class GetLoginCookie extends HttpServlet{
       	out.flush();
       	out.close();
 	}
-	
-	
-
 }
