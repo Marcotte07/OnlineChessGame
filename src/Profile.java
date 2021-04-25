@@ -50,7 +50,7 @@ public class Profile extends HttpServlet{
 			
 			out.println("<br>Recent Games: <br><br>");
 			
-			out.println("<table style=\"width:50%\">");
+			out.println("<table style=\"width:70%;margin: 0 auto\">");
 			out.println("<tr>");
 			out.println("<th>W/L</th>");
 			out.println("<th>Game</th>");
@@ -60,9 +60,14 @@ public class Profile extends HttpServlet{
 			out.println("<th>Date</th>");
 			out.println("</tr>");
 			
+			//yes im that lazy:
+			int counter = 1;
 			for(Game g : games) {
-				out.println("<tr>");
-				
+				if (counter % 2 == 0)
+					out.println("<tr style=\"background:lightgrey;color:black\">");
+				else 
+					out.println("<tr style=\"background:darkgrey;color:black\">");
+				++counter;
 				String oppUsername = "";
 				
 				//If user was white player
