@@ -399,7 +399,7 @@ public class Query {
 		} finally {
 			try {
 				if (ps != null) ps.close();
-				if (ps2 != null) ps.close();
+				if (ps2 != null) ps2.close();
 				if(gu != null) gu.close();
 			} catch (SQLException sqle2) {
 				sqle2.printStackTrace();
