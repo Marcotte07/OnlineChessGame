@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,8 +30,10 @@ public class Profile extends HttpServlet{
 		System.out.println(username);
 		
 		User u = null;
-
+		ArrayList<User> knownUsers = new ArrayList<User>();
+		
 		u = q.searchUser(username);
+		knownUsers.add(u);
 		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
@@ -64,7 +67,15 @@ public class Profile extends HttpServlet{
 				
 				//If user was white player
 				if(g.whitePlayerId == u.id) {
-					oppUsername = q.searchUser(g.blackPlayerId).username;
+					User tmp = idIsKnown(g.blackPlayerId,knownUsers);
+	
+					if(tmp == null) {
+						tmp = q.searchUser(g.blackPlayerId);	
+						knownUsers.add(tmp);
+					}
+					
+					oppUsername = tmp.username;
+					
 					//W/L
 					if(g.gameStatus.toLowerCase().equals("win")) {
 						out.println("<th>Win</th>");
@@ -84,7 +95,16 @@ public class Profile extends HttpServlet{
 				
 				//If user was black player
 				} else {
-					oppUsername = q.searchUser(g.whitePlayerId).username;
+					
+					User tmp = idIsKnown(g.whitePlayerId,knownUsers);
+					
+					if(tmp == null) {
+						tmp = q.searchUser(g.whitePlayerId);	
+						knownUsers.add(tmp);
+					}
+					
+					oppUsername = tmp.username;
+					
 					//W/L
 					if(g.gameStatus.toLowerCase().equals("loss")) {
 						out.println("<th>Win</th>");
@@ -124,6 +144,16 @@ public class Profile extends HttpServlet{
 		out.flush();
 		out.close();
 
+	}
+	
+	
+	private User idIsKnown(int id, ArrayList<User> knownUsers) {
+		for(User u: knownUsers) {
+			if(id == u.id) {
+				return u;
+			}
+		}
+		return null;
 	}
 	
 
