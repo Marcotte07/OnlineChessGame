@@ -114,7 +114,7 @@ public class ServerSocket {
 	}
 	
 	@OnClose
-	public void close(Session session) throws IOException {
+	public void close(Session session) throws IOException, SQLException {
 		System.out.println("Removing session with username " + cookieMap.get(session));
 		
 		/*
@@ -143,11 +143,18 @@ public class ServerSocket {
 		
 		opponentSession.remove(session);
 		
+		System.out.println("onclose deallocate");
+		if (q != null)
+			q.close();
 	}
 	
 	@OnError
-	public void error(Throwable error) {
+	public void error(Throwable error) throws SQLException {		
 		error.printStackTrace();
+		
+		System.out.println("onerror deallocate");
+		if (q != null)
+			q.close();
 	}
 	
 

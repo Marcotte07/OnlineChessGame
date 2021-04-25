@@ -44,4 +44,12 @@ public class Signup extends HttpServlet{
 			out.print("valid");
 		}		
 	}
+	
+	public void destroy() {
+		try {
+			q.close();
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
 }

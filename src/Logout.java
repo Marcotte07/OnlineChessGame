@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,4 +48,5 @@ public class Logout extends HttpServlet{
       }
       out.close();
 	}
+	
 }

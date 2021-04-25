@@ -49,4 +49,13 @@ public class GetLoginCookie extends HttpServlet{
       	out.flush();
       	out.close();
 	}
+	
+	public void destroy() {
+		try {
+			q.close();
+			
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
+	}
 }
