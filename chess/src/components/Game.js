@@ -175,9 +175,8 @@ function getGameResult() {
         }
         else if(color == 'b' && winner == 'BLACK') {
             ws.send("GameOver," + whitePiecesUsername + "," 
-            + blackPiecesUsername + ",win," + gameTime);
+            + blackPiecesUsername + ",lose," + gameTime);
         }
-        
         return `CHECKMATE - WINNER - ${winner}`
     }
     else if (chess.in_draw()) {
