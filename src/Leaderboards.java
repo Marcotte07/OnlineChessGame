@@ -29,9 +29,9 @@ public class Leaderboards extends HttpServlet{
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		
-				
+		
 		out.println("<table style=\"width:70%;margin: 0 auto;\">");
-		out.println("<tr>");
+		out.println("<tr style=\"background: black;\">");
 		out.println("<th>Rank</th>");
 		out.println("<th>Username</th>");
 		out.println("<th>Elo</th>");
@@ -60,8 +60,7 @@ public class Leaderboards extends HttpServlet{
 		}
 		out.println("</table>");
 		out.close();
-		
-		System.out.println("diff"); 	
+			
 	}
 	
 

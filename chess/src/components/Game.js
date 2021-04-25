@@ -59,8 +59,8 @@ export function handleMove(from, to) {
 
 console.log(document.cookie);
 
-// document.cookie = "username=Marcotte07";
-var ws = new WebSocket("ws://ec2-13-58-104-183.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint");
+var ws = new WebSocket("ws://localhost:8080/OnlineChessGame/GameEndpoint");
+//var ws = new WebSocket("ws://ec2-13-58-104-183.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint");
 
 export var color = 'b';
 
@@ -206,7 +206,7 @@ function getGameResult() {
         if(chess.in_stalemate()) {
             reason = 'STALEMATE'
         }
-        else if(chess.in_threefold_repitition()){
+        else if(chess.in_threefold_repetition()){
             reason = 'REPITITION'
         }
         else if(chess.insufficient_material()){
@@ -215,6 +215,9 @@ function getGameResult() {
         
         // Arbitrarily only have white call this so both clients dont send the same info
         if(color == 'w'){ 
+            console.log("Sending tie data")
+            console.log("GameOver," + whitePiecesUsername + "," 
+            + blackPiecesUsername + ",tie");
             ws.send("GameOver," + whitePiecesUsername + "," 
             + blackPiecesUsername + ",tie");
         }
