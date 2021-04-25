@@ -44,9 +44,9 @@ public class Leaderboards extends HttpServlet{
 		for(User u : users) {
 			//<a href="url">link text</a>
 			if (place % 2 == 0)
-				out.println("<tr style=\"background: grey; color:black\">");
+				out.println("<tr style=\"background: lightgrey; color:black\">");
 			else 
-				out.println("<tr style=\"background: linen; color: black\">");
+				out.println("<tr style=\"background: darkgrey; color: black\">");
  
 			out.println("<th>" + place + "</th>");
 			out.println("<th><a style=\"color:" + (place%2==0?"black":"black")+ "\" href=\"profile.html?name="+u.username+"\">" + u.username + "</a></th>");
