@@ -43,12 +43,26 @@ public class Profile extends HttpServlet{
 		} else {
 			Vector<Game> games =  q.getPlayerGames(username);
 			//out.println("<a href=\"profile.html?name="+u.username+"\">" + u.username + "</a><br>");
-			out.println("Elo: " +u.elo+"<br>");
-			out.println("num wins:" + u.numWins + "<br>");
-			out.println("num losses:" + u.numLosses + "<br>");
-			out.println("num ties: " + u.numTies + "<br>");
+
 			
-			out.println("<br>Recent Games: <br><br>");
+			out.println("<br><h1 style=\"text-align:center;font-weight:bold\">Match History</h1> <br><br>");
+			
+			
+			out.println("<table style=\"width:70%;margin: 0 auto\">");
+			out.println("<tr>");
+			out.println("<th>Elo</th>");
+			out.println("<th>Number of Wins</th>");
+			out.println("<th>Number of Losses</th>");
+			out.println("<th>Number of Ties</th>");
+			out.println("</tr>");
+			
+			out.println("<tr style=\"background:lightgrey;color:black\">");
+			out.println("<th>"+u.elo+"</th>");
+			out.println("<th>"+u.numWins+"</th>");
+			out.println("<th>"+u.numLosses+"</th>");
+			out.println("<th>"+u.numTies+"</th>");
+
+			
 			
 			out.println("<table style=\"width:70%;margin: 0 auto\">");
 			out.println("<tr>");
