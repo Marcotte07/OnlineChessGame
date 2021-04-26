@@ -385,27 +385,41 @@ public class Query {
 			SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			Long timeNow = new Date().getTime();
-			
 			Long timeAtStart = timeNow - timeDiff;
+			int whiteId = 0; 
+			int blackId = 0;
+			int whiteElo = 1000;
+			int blackElo = 1000;
+			
+			if(white != null) {
+				whiteId = white.id;
+				whiteElo = white.elo;
+			}
+			
+			if(black != null) {
+				blackId = black.id;
+				blackElo = black.elo;
+			}
 			
 			
 			//Create a new entry for the game played in the game table of the DB
 			System.out.println(String.format("INSERT INTO Game(white_player_id, black_player_id, "
 					+ "game_status, start_time, end_time, white_player_elo, black_player_elo) "
 					+ "VALUES (%s, %s, %s, %s, %s, %s, %s)", 
-					white.id,black.id,winOrLoss,dateSdf.format(timeAtStart),dateSdf.format(timeNow),white.elo,black.elo));
+					whiteId,blackId,winOrLoss,dateSdf.format(timeAtStart),dateSdf.format(timeNow),
+					whiteElo,blackElo));
 			
 			
 			gu =  conn.prepareStatement("INSERT INTO Game(white_player_id, black_player_id, "
 					+ "game_status, start_time, end_time, white_player_elo, black_player_elo) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?)");
-			gu.setInt(1, white.id);
-			gu.setInt(2, black.id);
+			gu.setInt(1, whiteId);
+			gu.setInt(2, blackId);
 			gu.setString(3, winOrLoss);
 			gu.setString(4, dateSdf.format(timeAtStart));
 			gu.setString(5, dateSdf.format(timeNow));
-			gu.setInt(6, white.elo);
-			gu.setInt(7, black.elo);
+			gu.setInt(6, whiteElo);
+			gu.setInt(7, blackElo);
 			gu.executeUpdate();
 			
 		} catch (SQLException sqle) {

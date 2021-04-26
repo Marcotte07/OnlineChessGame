@@ -90,10 +90,16 @@ public class Profile extends HttpServlet{
 	
 					if(tmp == null) {
 						tmp = q.searchUser(g.blackPlayerId);	
-						knownUsers.add(tmp);
+
 					}
 					
-					oppUsername = tmp.username;
+					if(tmp != null) {
+						knownUsers.add(tmp);
+						oppUsername = tmp.username;
+					} else {
+						oppUsername = "Guest";
+					}
+					
 					
 					//W/L
 					if(g.gameStatus.toLowerCase().equals("win")) {
@@ -105,8 +111,16 @@ public class Profile extends HttpServlet{
 					}
 					
 					//Game
-					out.println("<th><a href=\"profile.html?name=" + username + "\"><span style=\"color:green\">"+username+"</span></a> vs <a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a></th>");
-					
+					if (tmp != null) {
+						out.println("<th><a href=\"profile.html?name=" + username + 
+								"\"><span style=\"color:green\">"+username+
+								"</span></a> vs <a href=\"profile.html?name=" + 
+								oppUsername + "\">"+oppUsername+"</a></th>");
+					} else {
+						out.println("<th><a href=\"profile.html?name=" + username + 
+								"\"><span style=\"color:green\">"+username+
+								"</span></a> vs "+oppUsername+"</th>");
+					}
 					//Player Elo
 					out.println("<th>" + g.whitePlayerElo + "</th>");
 					//Opponent Elo
@@ -122,7 +136,12 @@ public class Profile extends HttpServlet{
 						knownUsers.add(tmp);
 					}
 					
-					oppUsername = tmp.username;
+					if(tmp != null) {
+						knownUsers.add(tmp);
+						oppUsername = tmp.username;
+					} else {
+						oppUsername = "Guest";
+					}
 					
 					//W/L
 					if(g.gameStatus.toLowerCase().equals("loss")) {
@@ -134,8 +153,14 @@ public class Profile extends HttpServlet{
 					}
 					
 					//Game
-					out.println("<th><a href=\"profile.html?name=" + oppUsername + "\">"+oppUsername+"</a> vs <a href=\"profile.html?name=" + username + "\"><span style=\"color:green\"> "+username+ "</a></span></th>");
-					
+					if(tmp != null) {
+						out.println("<th><a href=\"profile.html?name=" + oppUsername + "\">"
+								+oppUsername+"</a> vs <a href=\"profile.html?name=" + username +
+								"\"><span style=\"color:green\"> "+username+ "</a></span></th>");
+					} else {
+						out.println("<th> " +oppUsername+" vs <a href=\"profile.html?name=" + username +
+								"\"><span style=\"color:green\"> "+username+ "</a></span></th>");
+					}
 					//Player Elo
 					out.println("<th>" + g.blackPlayerElo + "</th>");
 					//Opponent Elo
