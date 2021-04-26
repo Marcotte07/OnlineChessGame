@@ -65,7 +65,7 @@ function App() {
 function goToHomeMenu(){
   //window.location.href = "http://localhost:11111/OnlineChessGame/";
 
-  window.location.href = "http://ec2-3-128-29-8.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/GameEndpoint";
+  window.location.href = "http://ec2-3-128-29-8.us-east-2.compute.amazonaws.com:8080/OnlineChessGame/";
 }
 
 
