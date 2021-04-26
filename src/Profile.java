@@ -44,11 +44,7 @@ public class Profile extends HttpServlet{
 			Vector<Game> games =  q.getPlayerGames(username);
 			//out.println("<a href=\"profile.html?name="+u.username+"\">" + u.username + "</a><br>");
 
-			
-			out.println("<br><h1 style=\"text-align:center;font-weight:bold\">Match History</h1> <br><br>");
-			
-			
-			out.println("<table style=\"width:70%;margin: 0 auto\">");
+			out.println("<table style=\"width:70%;margin: 0 auto; border-spacing: 10px;\">");
 			out.println("<tr>");
 			out.println("<th>Elo</th>");
 			out.println("<th>Number of Wins</th>");
@@ -56,16 +52,19 @@ public class Profile extends HttpServlet{
 			out.println("<th>Number of Ties</th>");
 			out.println("</tr>");
 			
+			
 			out.println("<tr style=\"background:lightgrey;color:black\">");
-			out.println("<th>"+u.elo+"</th>");
-			out.println("<th>"+u.numWins+"</th>");
-			out.println("<th>"+u.numLosses+"</th>");
-			out.println("<th>"+u.numTies+"</th>");
+			out.println("<th style=\"border-radius:30px;\">"+u.elo+"</th>");
+			out.println("<th style=\"border-radius:30px;\">"+u.numWins+"</th>");
+			out.println("<th style=\"border-radius:30px;\">"+u.numLosses+"</th>");
+			out.println("<th style=\"border-radius:30px;\">"+u.numTies+"</th>");
+			out.println("</tr></table>");
 
+			out.println("<br><br><br><h1 style=\"text-align:center;font-weight:bold\">Match History</h1><br>");
 			
 			
-			out.println("<table style=\"width:70%;margin: 0 auto\">");
-			out.println("<tr>");
+			out.println("<table style=\"width:60%;margin: 0 auto;\">");
+			out.println("<tr style=\"background: black;\">");
 			out.println("<th>W/L</th>");
 			out.println("<th>Game</th>");
 			out.println("<th>"+u.username+" Elo</th>");
