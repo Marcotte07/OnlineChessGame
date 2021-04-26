@@ -78,9 +78,9 @@ public class ServerSocket {
 			
 			q.updatePlayerGamesPlayed(white, black, state, time);
 			
-			if(!state.toLowerCase().equals("win")) {
+			if(state.toLowerCase().equals("win")) {
 				q.updateElo(white, black);
-			} else if(!state.toLowerCase().equals("loss")) {
+			} else if(state.toLowerCase().equals("loss")) {
 				q.updateElo(black, white);
 			}
 			
