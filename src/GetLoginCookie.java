@@ -16,8 +16,16 @@ public class GetLoginCookie extends HttpServlet{
 	
 	private Query q;
 	
-	public GetLoginCookie() throws IOException, ClassNotFoundException, SQLException {
-		q = new Query();
+	public GetLoginCookie() throws IOException, ClassNotFoundException {
+		try {
+			q = new Query();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
