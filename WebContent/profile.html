@@ -4,6 +4,7 @@
 	<meta charset="ISO-8859-1">
 	<title>Chess</title>
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 	<script>
 	
 		//Load the top navbar
@@ -49,6 +50,13 @@
 		function getName() {
 			document.getElementById('name').innerHTML = "<h2 style=\"text-align:center\">" + findGetParameter("name").toUpperCase(); + "</h2>";
 		}
+		
+		function findPlayer() {
+			var username = document.getElementsByName("searchbar")[0].value;
+			if (username == null || username == '')
+				return;
+			location.replace("profile.html?name="+username);
+		}
 	
 	</script>
 	
@@ -92,6 +100,37 @@
 	#name {
 	   color: #FFF;
 	}
+	.search {
+	  width: 100%;
+	  position: relative;
+	  display: flex;
+	}
+	
+	.searchTerm {
+	  width: 100%;
+	  border: 2px solid #6842ff;
+	  border-right: none;
+	  padding: 5px;
+	  height: 21px;
+	  border-radius: 20px 0 0 20px;
+	  outline: none;
+	}
+	
+	.searchTerm:focus{
+	  outline:0 !important;
+	}
+	
+	.searchButton {
+	  width: 60px;
+	  height: 35px;
+	  border: 2px solid #6842ff;
+	  border-left: none;
+	  text-align: center;
+	  color: #6842ff;
+	  border-radius: 0 20px 20px 0;
+	  cursor: pointer;
+	  font-size: 15px;
+	}
 	
 </style>
 </head>
@@ -101,6 +140,13 @@
 	<div id="nav-bar"></div>
 	<div id="name"></div>
 	<div id="content"></div>
+	<br><br><br>
+	<div id="searchbar" class="search" style="width: 250px; margin: 0 auto;">      
+   		<input name="searchbar" type="text" class="searchTerm" placeholder="  Search player">
+		<button type="button" onclick="findPlayer();" class="searchButton">
+			<i class="fa fa-search"></i>
+		</button>
+	</div>
 	<script>getName()</script>
 	<script>getProfileData()</script>
 	
