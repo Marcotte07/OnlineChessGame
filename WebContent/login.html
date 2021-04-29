@@ -4,8 +4,9 @@
 <meta charset="ISO-8859-1">
 <title>Chess</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-
+	 var passcode;
 	//Load the top navbar
 	function navbar(){
 		  $("#nav-bar").load("nav.html");
@@ -34,6 +35,7 @@
 	
 	//Call the signup servlet and make sure the given fields are valid
 	function signupJs(){
+
 	    var xmlHttp = new XMLHttpRequest();
 	    xmlHttp.open("POST", "Signup?sign_email=" + document.getElementById('sign_email').value + 
 	    		"&sign_uname=" + document.getElementById('sign_uname').value +
@@ -57,7 +59,21 @@
 	    		
 	 		    		
 		    	if(this.responseText == "valid") {
-		    		loginJs('sign_uname','subm_pwd');
+		     		$.ajax({
+		     			type: "GET",
+		    			url: "ValidServ",
+		    			data: {
+		    				email: document.getElementById('sign_email').value
+		    			},
+		    			success: function (result) {
+		    				//alert("success");
+		    				passcode = result.passcode;
+		    				$("#verification").html("Please check your email "+document.getElementById('sign_email').value+" and find the passcode for verification.");
+		    				document.getElementById("passcode").style.visibility = "visible";
+		    			}
+		    		});
+
+
 		    	} else if(this.responseText == "invalid") {
 		    		alert("invalid");
 		    	}
@@ -65,7 +81,17 @@
 	    }
 	    xmlHttp.send();
 	}
-	
+
+    function verifyPasscode() {
+  	  var userinput = document.getElementById('passcodeinput').value;
+  	  if ($.trim(userinput) != $.trim(passcode)) {
+  		  alert("Passcode does not match.");
+  	  } else {
+  		  //alert("Verification succssful!");
+  		loginJs('sign_uname','subm_pwd');
+  	  }
+    }
+
 	//Validates text field is below the max length
 	function underMaxLength(checkField, outputField) {
 		if(document.getElementById(checkField).value.length >= 29) {
@@ -238,6 +264,13 @@
 			  	<div style="display: flex; ">
 		  		<input class="submit-box" type="submit" value="Create Account"><br>
 		  		</div>
+		  		<br><br>
+		  		<div id="verification" style="color:white"></div>
+        			<div id="passcode" style="visibility: hidden">
+        			<input type="text" id="passcodeinput" placeholder="Enter passcode here.">
+        			<input type="button" Value="Verify" onclick="verifyPasscode();">
+        		</div>   
+		  		
 			</form>
 	</div>
 </div>
