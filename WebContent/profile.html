@@ -21,8 +21,7 @@
 		    		if (xmlHttp.responseText) {
 		    			if(this.responseText == "none") {
 		    				document.getElementById('content').innerHTML = 
-		    					"Either no player profile has been specified, or the one " +
-		    					"provided does not exist in the system. Are you logged in?";
+		    					"There is no user with this username. Check your spelling.";
 		    			}else {
 		    				document.getElementById('content').innerHTML = this.responseText;
 		    			}
@@ -85,6 +84,7 @@
 	#content {
 	   color: #FFF;
 	   font-size: 18px;
+	   text-align: center;
 	}
 	
 	th {
