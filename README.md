@@ -1,9 +1,8 @@
 # OnlineChessGame
 
 ### Links:
-
-Google Drive link:
-https://drive.google.com/drive/u/1/folders/0ABNxb_st-Dg3Uk9PVA
+PROJECT DEMONSTRTION LINK: 
+https://drive.google.com/file/d/14TXw4DAp3dXg7cR87jvufer0rtMjaYWO/view?usp=sharing
 
 
 ### Downloading Dependencies for Frontend:
